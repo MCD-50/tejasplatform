@@ -5,13 +5,8 @@
 	"main": "server.js",
 	"scripts": {
 		"start": "babel-node ./server.js --presets es2015,stage-2",
-		"migrate-up": "babel-node --presets es2015,stage-2 ./node_modules/.bin/sequelize db:migrate",
-		"migrate-down": "babel-node --presets es2015,stage-2 ./node_modules/.bin/sequelize db:migrate:undo",
-		"migrate-down-all": "babel-node --presets es2015,stage-2 ./node_modules/.bin/sequelize db:migrate:undo:all",
 		"dev": "nodemon server.js --exec babel-node --presets es2015,stage-2",
 		"server": "babel-node ./server.js --presets es2015,stage-2",
-		"dev-monster": "npm run migrate-up && npm run dev",
-		"server-monster": "npm run migrate-up && npm run server",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
