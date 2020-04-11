@@ -3,7 +3,7 @@ import joi from "joi";
 import * as collection from "../helper/collection";
 import * as joiHelper from "../helper/joiHelper";
 
-import apiType from "../enum/api";
+import api from "../enum/api";
 
 // repo
 import customer from "../repository/customer";
@@ -18,7 +18,7 @@ export const register = async (req, res) => {
 		const joiPayload = body && { ...body, ...collection.resolveDetailFromMeta(meta, true) } || null;
 
 		let error = null, value = null;
-		if (meta.apiType == apiType.ADMIN) {
+		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.CREATE_ADMIN_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
@@ -55,7 +55,7 @@ export const admins_get = async (req, res) => {
 		const joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta, true) } || null;
 
 		let error = null, value = null;
-		if (meta.apiType == apiType.ADMIN) {
+		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;

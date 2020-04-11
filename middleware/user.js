@@ -1,7 +1,7 @@
 import * as collection from "../app/helper/collection";
 import * as constant from "../app/helper/constant";
 
-import apiType from "../app/enum/api";
+import api from "../app/enum/api";
 
 import security from "../app/client/security";
 
@@ -22,7 +22,7 @@ export const requestCheck = async (req, res, next) => {
 
 		// attach meta
 		const _meta = {
-			apiType: apiType.USER,
+			api: api.USER,
 			customerId: jwtData.customerId,
 		};
 

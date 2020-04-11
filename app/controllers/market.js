@@ -3,7 +3,7 @@ import joi from "joi";
 import * as collection from "../helper/collection";
 import * as joiHelper from "../helper/joiHelper";
 
-import apiType from "../enum/api";
+import api from "../enum/api";
 
 // repo
 import market from "../repository/market";
@@ -77,11 +77,11 @@ export const markets_get = async (req, res) => {
 		const joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
-		if (meta.apiType == apiType.ADMIN) {
+		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_MARKET_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
-		} else if (meta.apiType == apiType.USER) {
+		} else if (meta.api == api.USER) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_MARKET_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
@@ -111,11 +111,11 @@ export const markets = async (req, res) => {
 		const joiPayload = query && { ...query, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
-		if (meta.apiType == apiType.ADMIN) {
+		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_MARKETS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
-		} else if (meta.apiType == apiType.USER) {
+		} else if (meta.api == api.USER) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_MARKETS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;

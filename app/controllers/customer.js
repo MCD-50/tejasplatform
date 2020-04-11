@@ -4,7 +4,7 @@ import * as constant from "../helper/constant";
 import * as collection from "../helper/collection";
 import * as joiHelper from "../helper/joiHelper";
 
-import apiType from "../enum/api";
+import api from "../enum/api";
 
 // client
 import security from "../client/security";
@@ -21,11 +21,11 @@ export const login = async (req, res) => {
 		const joiPayload = body && { ...body, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
-		if (meta.apiType == apiType.ADMIN) {
+		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.LOGIN_ADMIN_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
-		} else if (meta.apiType == apiType.USER) {
+		} else if (meta.api == api.USER) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.LOGIN_USER_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
@@ -84,7 +84,7 @@ export const customers_update = async (req, res) => {
 		const joiPayload = body && params && { ...body, ...params, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
-		if (meta.apiType == apiType.ADMIN) {
+		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.UPDATE_ADMIN_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
@@ -120,11 +120,11 @@ export const customers_get = async (req, res) => {
 		const joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
-		if (meta.apiType == apiType.ADMIN) {
+		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
-		} else if (meta.apiType == apiType.USER) {
+		} else if (meta.api == api.USER) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
@@ -153,7 +153,7 @@ export const customers = async (req, res) => {
 		const joiPayload = query && { ...query, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
-		if (meta.apiType == apiType.ADMIN) {
+		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_CUSTOMERS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;

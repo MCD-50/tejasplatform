@@ -2,7 +2,7 @@
 import * as collection from "../app/helper/collection";
 
 // enum utils
-import apiType from "../app/enum/apiType";
+import api from "../app/enum/api";
 
 export const requestCheck = async (req, res, next) => {
 	try {
@@ -14,7 +14,7 @@ export const requestCheck = async (req, res, next) => {
 
 		// attach meta
 		const _meta = {
-			apiType: apiType.PUBLIC,
+			api: api.PUBLIC,
 		};
 
 		// eslint-disable-next-line require-atomic-updates

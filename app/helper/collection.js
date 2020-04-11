@@ -2,7 +2,7 @@ import uuid from "uuid/v1";
 import randomstring from "randomstring";
 import useragent from "useragent";
 
-import apiType from "../enum/api";
+import api from "../enum/api";
 
 export const parseUserAgent = (text) => {
 	try {
@@ -22,13 +22,13 @@ export const parseUserAgent = (text) => {
 };
 
 export const resolveDetailFromMeta = (meta, preserveAdmin = false) => {
-	if (!meta || !meta.apiType) return {};
+	if (!meta || !meta.api) return {};
 
 	// return empty object wherever not required
-	if (meta.apiType == apiType.PUBLIC) return {};
-	else if (meta.apiType == apiType.CUSTOMER) return { customerId: meta.customerId };
-	else if (meta.apiType == apiType.NODE) return {};
-	else if (meta.apiType == apiType.ADMIN) {
+	if (meta.api == api.PUBLIC) return {};
+	else if (meta.api == api.CUSTOMER) return { customerId: meta.customerId };
+	else if (meta.api == api.NODE) return {};
+	else if (meta.api == api.ADMIN) {
 		if (!preserveAdmin) return {};
 		else return { customerId: meta.customerId };
 	}
