@@ -7,6 +7,7 @@ export const SOCKET_EVENT = "SOCKET_EVENT";
 
 // maps
 export const CUSTOMER_ID_FROM_JWT = "REDIS_CUSTOMER_ID_FROM_JWT";
+export const TICKER_MAP = "REDIS_TICKER_MAP";
 
 export const NOT_ALLOWED_UPDATE_FIELDS = ["_id", "customerId", "email", "eId", "secret", "key", "objectId", "createdAt", "updatedAt"];
 
