@@ -7,6 +7,10 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
+const io_adapter = require("socket.io-redis");
+const io_emitter = require("socket.io-emitter");
+
+
 const kue = require("kue");
 // const kueUI = require("kue-ui-express");
 
@@ -21,8 +25,11 @@ import initialize from "./app/worker/initialize";
 
 const app = express();
 const server = require("http").createServer(app);
+const io_server = require("socket.io")(server);
 
 app.redisClient = null;
+app.ioClient = null;
+app.emitterClient = null;
 app.kueClient = null;
 app.mongoClient = null;
 
@@ -71,38 +78,50 @@ mongoose.connection.on("open", () => {
 		app.redisClient = redisClient;
 		const _redisHelper = new redisHelper(redisClient);
 		app.redisHelper = _redisHelper;
+
+		// setup io adapter
+		io_server.adapter(io_adapter({
+			prefix: collection.parseEnvValue(process.env.REDIS_PREFIX),
+			host: collection.parseEnvValue(process.env.REDIS_HOST),
+			port: collection.parseEnvValue(process.env.REDIS_PORT),
+		}));
+
+		app.ioClient = io_server;
+
+		// setup io emitter
+		app.emitterClient = io_emitter(redisClient);
 	});
 
 	// setup kue
-	const kueClient = kue.createQueue({
-		prefix: collection.parseEnvValue(process.env.KUE_PREFIX),
-		redis: {
-			host: collection.parseEnvValue(process.env.KUE_HOST),
-			port: collection.parseEnvValue(process.env.KUE_PORT),
-		}
-	});
+	// const kueClient = kue.createQueue({
+	// 	prefix: collection.parseEnvValue(process.env.KUE_PREFIX),
+	// 	redis: {
+	// 		host: collection.parseEnvValue(process.env.KUE_HOST),
+	// 		port: collection.parseEnvValue(process.env.KUE_PORT),
+	// 	}
+	// });
 
-	kueClient.setMaxListeners(500);
-	kueClient.watchStuckJobs(10000);
-	app.kueClient = kueClient;
-	kueClient
-		.on("job complete", (id) => {
-			kue.Job.get(id, (err, job) => {
-				if (err) return;
-				job.remove((err) => {
-					if (err) return;
-				});
-			});
-		})
-		.on("job failed", (id) => {
-			kue.Job.get(id, async (err, job) => {
-				if (err) return;
-				if (job._max_attempts > 0) {
-					// get payload
-					console.log("JOB FAIL", `Job of type ${job.type} with id ${id} has failed.`);
-				}
-			});
-		});
+	// kueClient.setMaxListeners(500);
+	// kueClient.watchStuckJobs(10000);
+	// app.kueClient = kueClient;
+	// kueClient
+	// 	.on("job complete", (id) => {
+	// 		kue.Job.get(id, (err, job) => {
+	// 			if (err) return;
+	// 			job.remove((err) => {
+	// 				if (err) return;
+	// 			});
+	// 		});
+	// 	})
+	// 	.on("job failed", (id) => {
+	// 		kue.Job.get(id, async (err, job) => {
+	// 			if (err) return;
+	// 			if (job._max_attempts > 0) {
+	// 				// get payload
+	// 				console.log("JOB FAIL", `Job of type ${job.type} with id ${id} has failed.`);
+	// 			}
+	// 		});
+	// 	});
 
 	// enable routes
 	require("./engine").default(app);

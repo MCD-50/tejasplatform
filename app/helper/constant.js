@@ -1,6 +1,10 @@
 const tsetting = require("../../setting");
 export const setting = tsetting;
 
+// SOCKET
+export const SOCKET_CHANNEL = "SOCKET_CHANNEL";
+export const SOCKET_EVENT = "SOCKET_EVENT";
+
 // maps
 export const CUSTOMER_ID_FROM_JWT = "REDIS_CUSTOMER_ID_FROM_JWT";
 

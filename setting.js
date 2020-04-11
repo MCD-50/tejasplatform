@@ -1,9 +1,9 @@
 export const meta = {
-	markets: ["inr"],
-	targets: ["aks"],
+	markets: ["mcx", "ncdex", "nse", "nse_fo", "comex", "nymex", "intl", "nse_currency"],
+	targets: ["inr"],
 	pairs: {
-		inr: {
-			aks: { basename: "inr", targetname: "aks", decimal: 2 }
+		mcx: {
+			inr: { basename: "MCX", targetname: "India Rupee", decimal: 2 }
 		}
 	},
 };
