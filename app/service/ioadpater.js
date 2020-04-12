@@ -1,11 +1,20 @@
+const io_adapter = require("socket.io-redis");
+
 import * as constant from "../helper/constant";
 import * as collection from "../helper/collection";
 
 // client
 import security from "../client/security";
 
-export const _initialize_listening = (app) => {
-	app.io
+export const _initialize = (app, io_server) => {
+
+	// setup io adapter
+	io_server.adapter(io_adapter({
+		host: collection.parseEnvValue(process.env.REDIS_HOST),
+		port: collection.parseEnvValue(process.env.REDIS_PORT),
+	}));
+
+	io_server
 		.use(async (socket, next) => {
 			// eslint-disable-next-line no-use-before-define
 			const data = await _parse_user_detail(app, socket);
@@ -14,13 +23,11 @@ export const _initialize_listening = (app) => {
 			socket["id"] = data && data.id || collection.getUUID();
 			next();
 		})
-
 		// eslint-disable-next-line no-unused-vars
 		.on("connection", (socket) => {
 
 			// connection success
 			socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "connected"), { message: { userId: socket["userId"], id: socket["id"] } });
-
 
 			// on join
 			socket.on(collection.prepareRedisKey(constant.SOCKET_EVENT, "join"), async (room) => {
@@ -32,7 +39,7 @@ export const _initialize_listening = (app) => {
 					}
 
 					// just seperating the channel from the room
-					var name = room.replace(constant.SOCKET_CHANNEL);
+					var name = room.replace(constant.SOCKET_CHANNEL, "");
 					name = name.slice(1, name.length);
 
 					// join error
@@ -41,11 +48,13 @@ export const _initialize_listening = (app) => {
 					}
 
 					// join
-					socket.join(room);
+					// / in the namesace and socket is the key
+					io_server.of("/").adapter.remoteJoin(socket["id"], room, (err) => {
+						if (err) return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "Unable to join room" } });
 
-					// join succees
-					socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_success"), { message: { error: "Joined room" } });
-
+						// success
+						socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_success"), { message: { error: "Joined room" } });
+					});
 				} catch (exe) {
 					// join error
 					return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "Unable to join room" } });
@@ -63,7 +72,7 @@ export const _initialize_listening = (app) => {
 					}
 
 					// just seperating the channel from the room
-					var name = room.replace(constant.SOCKET_CHANNEL);
+					var name = room.replace(constant.SOCKET_CHANNEL, "");
 					name = name.slice(1, name.length);
 
 					// join error
@@ -71,12 +80,14 @@ export const _initialize_listening = (app) => {
 						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "Room name is not valid" } });
 					}
 
-					// join
-					socket.leave(room);
+					// leave
+					// / in the namesace and socket is the key
+					io_server.of("/").adapter.remoteLeave(socket["id"], room, (err) => {
+						if (err) return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "Unable to leave room" } });
 
-					// join succees
-					socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_success"), { message: { error: "Left room" } });
-
+						// succees
+						socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_success"), { message: { error: "Left room" } });
+					});
 				} catch (exe) {
 					// join error
 					return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "Unable to leave room" } });
@@ -85,7 +96,8 @@ export const _initialize_listening = (app) => {
 		});
 };
 
-export const _parse_user_detail = async (app, socket) => {
+// internal method
+const _parse_user_detail = async (app, socket) => {
 	try {
 		if (!socket.handshake.query["authorization"] || socket.request.headers["user-agent"]) throw { error: "Not authorized to access the sockets" };
 

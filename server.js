@@ -7,11 +7,10 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
-const io_adapter = require("socket.io-redis");
 const io_emitter = require("socket.io-emitter");
 
 
-const kue = require("kue");
+// const kue = require("kue");
 // const kueUI = require("kue-ui-express");
 
 const redis = require("redis");
@@ -20,15 +19,18 @@ import * as collection from "./app/helper/collection";
 
 import redisHelper from "./app/helper/redisHelper";
 
+// service utils
+import * as ioadapter from "./app/service/ioadpater";
+
 // worker utils
 import initialize from "./app/worker/initialize";
+
 
 const app = express();
 const server = require("http").createServer(app);
 const io_server = require("socket.io")(server);
 
 app.redisClient = null;
-app.io = null;
 app.emitter = null;
 app.kueClient = null;
 app.mongoClient = null;
@@ -79,13 +81,8 @@ mongoose.connection.on("open", () => {
 		const _redisHelper = new redisHelper(redisClient);
 		app.redisHelper = _redisHelper;
 
-		// setup io adapter
-		io_server.adapter(io_adapter({
-			host: collection.parseEnvValue(process.env.REDIS_HOST),
-			port: collection.parseEnvValue(process.env.REDIS_PORT),
-		}));
-
-		app.io = io_server;
+		// init adapter
+		ioadapter._initialize(app, io_server);
 
 		// setup io emitter
 		app.emitter = io_emitter(redis.createClient({
