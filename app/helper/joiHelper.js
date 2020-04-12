@@ -27,8 +27,7 @@ export const GET_ADMIN_MARKETS_PAYLOAD = joi.object().keys({ customerId: joi.str
 
 // CUSTOMER
 export const CREATE_ADMIN_CUSTOMER_PAYLOAD = joi.object().keys({ password: joi.string().trim().required(), type: joi.string().trim().valid(["user", "admin"]), allowed: joi.string().trim(), limit: joi.number() });
-export const LOGIN_USER_CUSTOMER_PAYLOAD = joi.object().keys({ userId: joi.string().trim().length(10).required(), password: joi.string().trim().required() });
-export const LOGIN_ADMIN_CUSTOMER_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), userId: joi.string().trim().length(10).required(), password: joi.string().trim().required() });
+export const LOGIN_PAYLOAD = joi.object().keys({ userId: joi.string().trim().length(10).required(), password: joi.string().trim().required() });
 export const UPDATE_ADMIN_CUSTOMER_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), password: joi.string().trim(), allowed: joi.string().trim(), limit: joi.number(), freeze: joi.boolean() });
 export const GET_USER_CUSTOMER_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required() });
 export const GET_ADMIN_CUSTOMER_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required() });

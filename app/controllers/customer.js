@@ -14,23 +14,10 @@ import customer from "../repository/customer";
 
 export const login = async (req, res) => {
 	try {
-		const meta = req.meta;
-
 		const body = req.body || null;
 
-		const joiPayload = body && { ...body, ...collection.resolveDetailFromMeta(meta) } || null;
-
-		let error = null, value = null;
-		if (meta.api == api.ADMIN) {
-			const inst = joiPayload && joi.validate(joiPayload, joiHelper.LOGIN_ADMIN_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
-			error = inst.error;
-			value = inst.value;
-		} else if (meta.api == api.USER) {
-			const inst = joiPayload && joi.validate(joiPayload, joiHelper.LOGIN_USER_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
-			error = inst.error;
-			value = inst.value;
-		}
-
+		const joiPayload = body && { ...body } || null;
+		let { error, value } = joiPayload && joi.validate(joiPayload, joiHelper.LOGIN_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const filter = { userId: value.userId, password: security.hash(value.password) };
