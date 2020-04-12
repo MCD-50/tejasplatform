@@ -14,6 +14,7 @@ class Base {
 		sessionOptions = sessionOptions || {};
 		return new Promise((resolve) => {
 			this.db.create([payload], { ...sessionOptions }, (error, value) => {
+				error && console.log(error);
 				if (value && value.length > 0) {
 					return resolve({ value: value[0] });
 				} else {
@@ -27,6 +28,7 @@ class Base {
 		if (!this.db) this.db = factory.resolveInstance(this.actualDbName);
 		return new Promise((resolve) => {
 			this.db.insertMany(payloads, (error, value) => {
+				error && console.log(error);
 				if (value) {
 					return resolve({ value: true });
 				} else {
@@ -41,6 +43,7 @@ class Base {
 		return new Promise((resolve) => {
 			// we are not performing lean
 			this.db.findOne(filter).select(keys).exec((error, value) => {
+				error && console.log(error);
 				if (value) {
 					return resolve({ value: value });
 				} else {
@@ -56,6 +59,7 @@ class Base {
 		sessionOptions = sessionOptions || {};
 		return new Promise((resolve) => {
 			this.db.findOneAndUpdate(filter, payload, { upsert: true }, (error, value) => {
+				error && console.log(error);
 				if (value) {
 					return resolve({ value: value });
 				} else {
@@ -70,6 +74,7 @@ class Base {
 		sessionOptions = sessionOptions || {};
 		return new Promise((resolve) => {
 			item.save({ ...sessionOptions }, (error, value) => {
+				error && console.log(error);
 				if (value) {
 					return resolve({ value: value });
 				} else {
@@ -83,6 +88,7 @@ class Base {
 		if (!this.db) this.db = factory.resolveInstance(this.actualDbName);
 		return new Promise((resolve) => {
 			this.db.findOneAndDelete(filter, (error, value) => {
+				error && console.log(error);
 				if (value) {
 					return resolve({ value: true });
 				} else {
@@ -96,6 +102,7 @@ class Base {
 		if (!this.db) this.db = factory.resolveInstance(this.actualDbName);
 		return new Promise((resolve) => {
 			this.db.count(filter, (error, value) => {
+				error && console.log(error);
 				if (value) {
 					return resolve({ value: value });
 				} else {
@@ -110,6 +117,7 @@ class Base {
 		if (!this.db) this.db = factory.resolveInstance(this.actualDbName);
 		return new Promise((resolve) => {
 			this.db.find(filter).select(keys).lean().exec((error, value) => {
+				error && console.log(error);
 				if (value) {
 					return resolve({ value: value });
 				} else {
@@ -125,6 +133,7 @@ class Base {
 		if (!paging.sort) paging = { ...paging, sort: { createdAt: -1 } };
 		return new Promise((resolve) => {
 			this.db.paging({ filter, ...paging, keys }, (error, value) => {
+				error && console.log(error);
 				if (value && value.rows != null) {
 					const nvalue = { data: [], count: 0 };
 					nvalue.data = value.rows.slice() || [];

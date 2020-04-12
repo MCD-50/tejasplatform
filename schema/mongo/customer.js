@@ -26,15 +26,14 @@ const schema = {
 	},
 	limit: {
 		type: Number,
-		required: true,
+		default: 0
 	},
 	allowed: {
 		type: String,
-		required: true,
+		default: "",
 	},
 	freeze: {
 		type: Boolean,
-		required: true,
 		default: false,
 	},
 	createdAt: {
