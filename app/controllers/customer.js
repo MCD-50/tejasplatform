@@ -38,7 +38,7 @@ export const login = async (req, res) => {
 		if (!authorization) return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
 
 		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(req.headers.device, authorization));
-		const data = await req.app.redisHelper.set(redKey1);
+		const data = await req.app.redisHelper.set(redKey1, customerdata.value.customerId);
 		if (data.value) {
 			req.app.redisHelper.expire(redKey1, collection.parseEnvValue(process.env.REDIS_TOKEN_EXPIRE));
 			return res.status(200).json(collection.getJsonResponse({ result: { ...jwtpayload, authorization } }));

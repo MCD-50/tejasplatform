@@ -56,7 +56,6 @@ app.use(morgan(':c-ip - :date - :method - :url - HTTP/:http-version - :status - 
 		}
 	}));
 
-
 //setup mongoose
 mongoose.connect(collection.parseEnvValue(process.env.MONGO_URI), {
 	reconnectTries: collection.parseEnvValue(process.env.MONGO_RECONNECT_TRIES),
@@ -137,10 +136,10 @@ mongoose.connection.on("open", () => {
 		});
 
 		process.once("SIGTERM", () => {
-			kueClient.shutdown(5000, (err) => {
-				console.log("APP_ERROR", "Kue shutdown", err);
-				process.exit(0);
-			});
+			// kueClient.shutdown(5000, (err) => {
+			// 	console.log("APP_ERROR", "Kue shutdown", err);
+			// 	process.exit(0);
+			// });
 		});
 
 		initialize(app);
