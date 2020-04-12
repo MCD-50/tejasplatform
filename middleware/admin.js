@@ -30,6 +30,7 @@ export const requestCheck = async (req, res, next) => {
 		req.meta = _meta;
 		return next();
 	} catch (exe) {
+		console.log(exe);
 		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };

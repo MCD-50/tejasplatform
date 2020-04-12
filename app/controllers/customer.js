@@ -11,6 +11,7 @@ import security from "../client/security";
 
 // repo
 import customer from "../repository/customer";
+import actiity from "../repository/activity";
 
 export const login = async (req, res) => {
 	try {
@@ -31,6 +32,7 @@ export const login = async (req, res) => {
 			userId: customerdata.value.userId,
 			allowed: customerdata.value.allowed,
 			limit: customerdata.value.limit,
+			type: customerdata.value.type,
 			freeze: customerdata.value.freeze,
 		};
 
@@ -40,6 +42,17 @@ export const login = async (req, res) => {
 		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(req.headers.device, authorization));
 		const data = await req.app.redisHelper.set(redKey1, customerdata.value.customerId);
 		if (data.value) {
+
+			// call the activity creation
+			const activityPayload = {
+				customerId: customerdata.value.customerId,
+				ipAddress: req.headers["cf-connecting-ip"] || req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || req.ip || "unidentified",
+				device: req.headers["device"] || "unidentified",
+			};
+
+			// create in background
+			actiity._createItem(activityPayload);
+
 			req.app.redisHelper.expire(redKey1, collection.parseEnvValue(process.env.REDIS_TOKEN_EXPIRE));
 			return res.status(200).json(collection.getJsonResponse({ result: { ...jwtpayload, authorization } }));
 		} else {

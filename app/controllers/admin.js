@@ -15,7 +15,7 @@ export const register = async (req, res) => {
 
 		const body = req.body || null;
 
-		const joiPayload = body && { ...body, ...collection.resolveDetailFromMeta(meta, true) } || null;
+		const joiPayload = body && { ...body, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
@@ -23,7 +23,7 @@ export const register = async (req, res) => {
 			error = inst.error;
 			value = inst.value;
 		}
-
+		
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const payload = {
@@ -50,9 +50,7 @@ export const admins_get = async (req, res) => {
 	try {
 		const meta = req.meta;
 
-		const params = req.params || null;
-
-		const joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta, true) } || null;
+		const joiPayload = { ...collection.resolveDetailFromMeta(meta, true) } || null;
 
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
