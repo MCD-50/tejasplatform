@@ -28,8 +28,8 @@ const server = require("http").createServer(app);
 const io_server = require("socket.io")(server);
 
 app.redisClient = null;
-app.ioClient = null;
-app.emitterClient = null;
+app.io = null;
+app.emitter = null;
 app.kueClient = null;
 app.mongoClient = null;
 
@@ -81,15 +81,17 @@ mongoose.connection.on("open", () => {
 
 		// setup io adapter
 		io_server.adapter(io_adapter({
-			prefix: collection.parseEnvValue(process.env.REDIS_PREFIX),
 			host: collection.parseEnvValue(process.env.REDIS_HOST),
 			port: collection.parseEnvValue(process.env.REDIS_PORT),
 		}));
 
-		app.ioClient = io_server;
+		app.io = io_server;
 
 		// setup io emitter
-		app.emitterClient = io_emitter(redisClient);
+		app.emitter = io_emitter(redis.createClient({
+			host: collection.parseEnvValue(process.env.REDIS_HOST),
+			port: collection.parseEnvValue(process.env.REDIS_PORT),
+		}));
 	});
 
 	// setup kue
