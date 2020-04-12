@@ -65,6 +65,8 @@ export const activities = async (req, res) => {
 
 		const filter = {};
 		if (value.customerId) filter.customerId = value.customerId;
+		if (value.ipAddress) filter.ipAddress = value.ipAddress;
+		
 		const paging = { page: value.page, limit: value.limit };
 
 		const data = await activity._filterItem(filter, paging);

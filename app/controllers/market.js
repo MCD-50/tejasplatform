@@ -125,6 +125,9 @@ export const markets = async (req, res) => {
 
 		const filter = {};
 		if (value.customerId) filter.customerId = value.customerId;
+		if (value.market) filter.market = value.market;
+		if (value.target) filter.target = value.target;
+		
 		const paging = { page: value.page, limit: value.limit };
 
 		const data = await market._filterItem(filter, paging);

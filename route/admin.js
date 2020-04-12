@@ -7,5 +7,5 @@ export const routes = [
 	// admin API calls
 	{ method: "post", endPoint: "register@register", routePrefix: collection.parseEnvValue(process.env.ADMIN_ROUTE_PREFIX), adminMiddleware: true },
 	
-	{ method: "get", endPoint: "admins_get@admins/get/:customerId", routePrefix: collection.parseEnvValue(process.env.ADMIN_ROUTE_PREFIX), adminMiddleware: true }, //
+	{ method: "get", endPoint: "admins_get@admins/get", routePrefix: collection.parseEnvValue(process.env.ADMIN_ROUTE_PREFIX), adminMiddleware: true }, //
 ];

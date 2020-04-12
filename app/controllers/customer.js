@@ -34,14 +34,17 @@ export const login = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const filter = { userId: value.userId, password: security.hash(value.password) };
+		if (value.customerId) filter.customerId = value.customerId;
+
 		const customerdata = await customer._getItem(filter);
-		if (customerdata.error || !customerdata.value) return res.status(422).json(collection.getJsonError({ error: "Invalid user id or password" }));
+		if (customerdata.error || !customerdata.value || customerdata.value.freeze) return res.status(422).json(collection.getJsonError({ error: "Invalid user id or password" }));
 
 		const jwtpayload = {
 			customerId: customerdata.value.customerId,
 			userId: customerdata.value.userId,
 			allowed: customerdata.value.allowed,
-			limit: customerdata.value.limit
+			limit: customerdata.value.limit,
+			freeze: customerdata.value.freeze,
 		};
 
 		const authorization = security.jwtEncode(jwtpayload);
@@ -96,6 +99,7 @@ export const customers_update = async (req, res) => {
 		if (value.password) payload.password = security.hash(value.password);
 		if (value.limit) payload.limit = value.limit;
 		if (value.allowed) payload.allowed = value.allowed;
+		if (value.freeze != null) payload.freeze = value.freeze;
 
 		if (Object.keys(payload).length < 1) return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
 
@@ -163,7 +167,9 @@ export const customers = async (req, res) => {
 
 		const filter = {};
 		if (value.customerId) filter.customerId = value.customerId;
+		if (value.userId) filter.userId = value.userId;
 		if (value.type) filter.type = value.type;
+		
 		const paging = { page: value.page, limit: value.limit };
 
 		const data = await customer._filterItem(filter, paging);

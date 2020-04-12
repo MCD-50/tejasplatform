@@ -65,6 +65,7 @@ export const notifications = async (req, res) => {
 
 		const filter = {};
 		if (value.customerId) filter.customerId = value.customerId;
+		
 		const paging = { page: value.page, limit: value.limit };
 
 		const data = await notification._filterItem(filter, paging);
