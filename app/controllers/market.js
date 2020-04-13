@@ -32,7 +32,7 @@ export const markets_create = async (req, res) => {
 		if (countdata.error || countdata.value == null) return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
 
 		if (!customerdata.value.limit || Number(customerdata.value.limit) <= Number(countdata.value)) return res.status(422).json(collection.getJsonError({ error: "Cannot add more pairs" }));
-		if (!customerdata.value.allowed || customerdata.value.allowed.includes(value.market)) return res.status(422).json(collection.getJsonError({ error: "Cannot be added" }));
+		if (!customerdata.value.allowed || !customerdata.value.allowed.includes(value.market)) return res.status(422).json(collection.getJsonError({ error: "Cannot be added" }));
 
 		const payload = { customerId: value.customerId, market: value.market, target: value.target };
 		const data = await market._createItem(payload);
