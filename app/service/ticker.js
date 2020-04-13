@@ -14,13 +14,15 @@ export const _read = (app, fileurl, mom) => {
 		const target = String(obj.target).toLowerCase().split(" ").join("_");
 
 		// check if valid pair
-		// if (!constant.setting.meta.markets.includes(market) || !constant.setting.meta.targets.includes(target)) return null;
+		// if (!constant.setting.meta.markets.includes(market)) return null;
 
 		const channel = collection.prepareRedisKey(constant.SOCKET_CHANNEL, market);
 		const event = collection.prepareRedisKey(constant.SOCKET_EVENT, target);
 		const pair = collection.prepareRedisKey(market, collection.prepareRedisKey("div", target));
 
 		const buffer = collection.getStringFromJson(obj);
+
+		circit.set_pairs(pair);
 
 		if (circit.get_change_map(pair) == buffer) return null;
 		circit.set_change_map(pair, buffer);
@@ -38,7 +40,7 @@ export const _persist = (app, fileurl, mom) => {
 		const target = String(obj.target).toLowerCase().split(" ").join("_");
 
 		// check if valid pair
-		// if (!constant.setting.meta.markets.includes(market) || !constant.setting.meta.targets.includes(target)) return null;
+		// if (!constant.setting.meta.markets.includes(market)) return null;
 
 		const pair = collection.prepareRedisKey(market, collection.prepareRedisKey("div", target));
 		const buffer = collection.getStringFromJson(obj);

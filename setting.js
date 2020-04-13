@@ -1,4 +1,3 @@
 export const meta = {
-	markets: ["mcx", "ncdex", "nse", "nse_fo", "comex", "nymex", "intl", "nse_currency"],
-	targets: ["inr"],
+	markets: ["mcx", "ncdex", "nse_fno", "nse_cash", "intl_spot", "comex", "forex", "nse_currency"],
 };
