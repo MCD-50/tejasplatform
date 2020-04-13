@@ -13,22 +13,25 @@ export const _read = (app, fileurl, mom) => {
 		const market = String(obj.market).toLowerCase().split(" ").join("_");
 		const target = String(obj.target).toLowerCase().split(" ").join("_");
 
-		// check if valid pair
-		// if (!constant.setting.meta.markets.includes(market)) return null;
+		if (market && target) {
+			// check if valid pair
+			if (!constant.setting.meta.markets.includes(market)) return null;
 
-		const channel = collection.prepareRedisKey(constant.SOCKET_CHANNEL, market);
-		const event = collection.prepareRedisKey(constant.SOCKET_EVENT, target);
-		const pair = collection.prepareRedisKey(market, collection.prepareRedisKey("div", target));
+			const channel = collection.prepareRedisKey(constant.SOCKET_CHANNEL, market);
+			const event = collection.prepareRedisKey(constant.SOCKET_EVENT, target);
 
-		const buffer = collection.getStringFromJson(obj);
+			const pair = collection.prepareRedisKey(market, collection.prepareRedisKey("div", target));
 
-		circit.set_pairs(pair);
+			const buffer = collection.getStringFromJson(obj);
 
-		if (circit.get_change_map(pair) == buffer) return null;
-		circit.set_change_map(pair, buffer);
+			circit.set_pairs(pair);
 
-		// and push to room
-		app.emitter.to(channel).emit(event, buffer);
+			if (circit.get_change_map(pair) == buffer) return null;
+			circit.set_change_map(pair, buffer);
+
+			// and push to room
+			app.emitter.to(channel).emit(event, buffer);
+		}
 	});
 };
 
@@ -39,13 +42,15 @@ export const _persist = (app, fileurl, mom) => {
 		const market = String(obj.market).toLowerCase().split(" ").join("_");
 		const target = String(obj.target).toLowerCase().split(" ").join("_");
 
-		// check if valid pair
-		// if (!constant.setting.meta.markets.includes(market)) return null;
+		if (market && target) {
+			// check if valid pair
+			if (!constant.setting.meta.markets.includes(market)) return null;
 
-		const pair = collection.prepareRedisKey(market, collection.prepareRedisKey("div", target));
-		const buffer = collection.getStringFromJson(obj);
+			const pair = collection.prepareRedisKey(market, collection.prepareRedisKey("div", target));
+			const buffer = collection.getStringFromJson(obj);
 
-		// add to redis
-		app.redisHelper.hmset(constant.TICKER_MAP, pair, buffer);
+			// add to redis
+			app.redisHelper.hmset(constant.TICKER_MAP, pair, buffer);
+		}
 	});
 };
