@@ -11,7 +11,7 @@ const initialize = (app) => {
 		setInterval(() => ticker._read(app, _path, moment()), 30);
 	
 		// redis
-		setInterval(() => ticker._persist(app, _path, moment()), 1000);
+		setInterval(() => ticker._persist(app, _path, moment()), 5000);
 	});
 };
 
