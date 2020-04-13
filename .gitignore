@@ -8,3 +8,4 @@ configServer.js
 .env
 spmdb/
 spmlogs/
+files.js
