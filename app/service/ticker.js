@@ -24,11 +24,9 @@ export const _read = (app, fileurl, mom) => {
 
 			const buffer = collection.getStringFromJson(obj);
 
-			circit.set_pairs(pair);
-
 			if (circit.get_change_map(pair) == buffer) return null;
 			circit.set_change_map(pair, buffer);
-
+			
 			// and push to room
 			app.emitter.to(channel).emit(event, buffer);
 		}
@@ -51,6 +49,9 @@ export const _persist = (app, fileurl, mom) => {
 
 			// add to redis
 			app.redisHelper.hmset(constant.TICKER_MAP, pair, buffer);
+
+			// at last
+			circit.set_pairs(pair);
 		}
 	});
 };

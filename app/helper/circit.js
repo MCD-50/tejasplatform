@@ -17,7 +17,7 @@ class Circit {
 	}
 
 	get_change_map(key) {
-		return this.change_map[key] || "";
+		return (this.change_map[key] || "");
 	}
 }
 

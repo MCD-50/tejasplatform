@@ -1,8 +1,21 @@
+const fs = require("fs");
+
 const xlsx = require("node-xlsx");
 
 class Piper {
 	stream(fileurl, callback) {
 		try {
+
+			const write_stream = fs.createWriteStream(fileurl);
+			// write_stream.write("", "base64");
+
+			// the finish event is emitted when all data has been flushed from the stream
+			// write_stream.on("finish", () => console.log("save success"));
+			// write_stream.on("error", () => console.log("save error"));
+
+			// close the stream
+			write_stream.end();
+
 			var obj = xlsx.parse(fileurl); // parses a file
 			obj.forEach(x => {
 				if (x.data && x.data.length > 0) {

@@ -12,7 +12,7 @@ const initialize = (app) => {
 	
 		// redis
 		setInterval(() => ticker._persist(app, _path, moment()), 1000);
-	})
+	});
 };
 
 export default initialize;
