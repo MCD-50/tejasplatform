@@ -103,7 +103,7 @@ class Base {
 		return new Promise((resolve) => {
 			this.db.count(filter, (error, value) => {
 				error && console.log(error);
-				if (value) {
+				if (value != null && value != undefined) {
 					return resolve({ value: value });
 				} else {
 					return resolve({ error: "Something went wrong." });
