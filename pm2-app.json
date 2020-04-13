@@ -1,0 +1,9 @@
+{
+	"apps": [
+		{
+			"name": "platform",
+			"script": "npm",
+			"args" : "start"
+		}
+	]
+}
