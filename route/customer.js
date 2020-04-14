@@ -14,6 +14,7 @@ export const routes = [
 
 	// -- customer auth
 	{ method: "get", endPoint: "customers_get@customers/get/:customerId", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) }, //
+	{ method: "put", endPoint: "customers_changepassword@customers/changepassword/:customerId", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) }, //
 
 	// -- admin auth
 	{ method: "get", endPoint: "customers_get@customers/get/:customerId", routePrefix: collection.parseEnvValue(process.env.ADMIN_ROUTE_PREFIX), adminMiddleware: true }, //

@@ -127,6 +127,38 @@ export const customers_update = async (req, res) => {
 	}
 };
 
+export const customers_changepassword = async (req, res) => {
+	try {
+		const meta = req.meta;
+
+		const body = req.body || null;
+		const params = req.params || null;
+
+		const joiPayload = body && params && { ...body, ...params, ...collection.resolveDetailFromMeta(meta) } || null;
+
+		let error = null, value = null;
+		if (meta.api == api.USER) {
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.CHANGE_PASSWORD_USER_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			error = inst.error;
+			value = inst.value;
+		}
+
+		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
+
+		const payload = { password: security.hash(value.newpassword) };
+		const filter = { customerId: value.customerId, password: security.hash(value.oldpassword) };
+
+		const data = await customer._updateItem(filter, payload);
+		if (data.value) {
+			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
+		} else {
+			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		}
+	} catch (exe) {
+		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+	}
+};
+
 export const customers_get = async (req, res) => {
 	try {
 		const meta = req.meta;
