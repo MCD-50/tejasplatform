@@ -30,6 +30,17 @@ export const register = async (req, res) => {
 			customerId: collection.getUUID(),
 			userId: collection.getSeed(10),
 			password: security.hash(value.password),
+			
+			name: value.name || "",
+			mobile: value.mobile || "",
+			email: value.email || "",
+			amount: value.amount || "",
+			location: value.location || "",
+			handler: value.handler || "",
+			start: value.start,
+			end: value.end,
+
+
 			type: value.type || "user",
 			limit: value.limit || 1,
 			allowed: value.allowed || ""

@@ -30,6 +30,8 @@ export const login = async (req, res) => {
 		const jwtpayload = {
 			customerId: customerdata.value.customerId,
 			userId: customerdata.value.userId,
+			start: customerdata.value.start,
+			end: customerdata.value.end,
 			allowed: customerdata.value.allowed,
 			limit: customerdata.value.limit,
 			type: customerdata.value.type,
@@ -97,6 +99,16 @@ export const customers_update = async (req, res) => {
 
 		const payload = {};
 		if (value.password) payload.password = security.hash(value.password);
+
+		if (value.name) payload.name = value.name;
+		if (value.mobile) payload.mobile = value.mobile;
+		if (value.email) payload.email = value.email;
+		if (value.amount) payload.amount = value.amount;
+		if (value.location) payload.location = value.location;
+		if (value.handler) payload.handler = value.handler;
+		if (value.start) payload.start = value.start;
+		if (value.end) payload.end = value.end;
+
 		if (value.limit) payload.limit = value.limit;
 		if (value.allowed) payload.allowed = value.allowed;
 		if (value.freeze != null) payload.freeze = value.freeze;
@@ -169,7 +181,9 @@ export const customers = async (req, res) => {
 		if (value.customerId) filter.customerId = value.customerId;
 		if (value.userId) filter.userId = value.userId;
 		if (value.type) filter.type = value.type;
-		
+		if (value.location) filter.location = value.location;
+		if (value.handler) filter.handler = value.handler;
+
 		const paging = { page: value.page, limit: value.limit };
 
 		const data = await customer._filterItem(filter, paging);

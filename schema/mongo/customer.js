@@ -24,6 +24,40 @@ const schema = {
 		default: "user",
 		enum: ["user", "admin"]
 	},
+
+	name: {
+		type: String,
+		default: "",
+	},
+	mobile: {
+		type: String,
+		default: "",
+	},
+	email: {
+		type: String,
+		default: "",
+	},
+	amount: {
+		type: String,
+		default: "",
+	},
+	location: {
+		type: String,
+		default: "",
+	},
+	handler: {
+		type: String,
+		default: "",
+	},
+	start: {
+		type: Date,
+		default: Date.now
+	},
+	end: {
+		type: Date,
+		default: Date.now
+	},
+	
 	limit: {
 		type: Number,
 		default: 0
