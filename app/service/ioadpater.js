@@ -35,16 +35,17 @@ export const _initialize = (app, io_server) => {
 
 				try {
 
-					if (!socket.userId || !socket.customerId || !socket.allowed) {
-						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "User is not authenticated" } });
-					}
+					// if (!socket.userId || !socket.customerId || !socket.allowed) {
+					// 	return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "User is not authenticated" } });
+					// }
 
 					// just seperating the channel from the room
 					var name = room.replace(constant.SOCKET_CHANNEL, "");
 					name = name.slice(1, name.length);
 
 					// join error
-					if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
+					// if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
+					if (!constant.setting.meta.markets.includes(name)) {
 						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "Room name is not valid" } });
 					}
 
@@ -68,17 +69,18 @@ export const _initialize = (app, io_server) => {
 
 				try {
 
-					if (!socket.userId || !socket.customerId || !socket.allowed) {
-						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "User is not authenticated" } });
-					}
+					// if (!socket.userId || !socket.customerId || !socket.allowed) {
+					// 	return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "User is not authenticated" } });
+					// }
 
 					// just seperating the channel from the room
 					var name = room.replace(constant.SOCKET_CHANNEL, "");
 					name = name.slice(1, name.length);
 
-					// join error
-					if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
-						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "Room name is not valid" } });
+					// leave error
+					// if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
+					if (!constant.setting.meta.markets.includes(name)) {
+						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "Room name is not valid" } });
 					}
 
 					// leave
@@ -113,8 +115,8 @@ const _parse_user_detail = async (app, socket) => {
 		const jwtData = security.jwtDecode(socket.handshake.query["authorization"]);
 		if (!jwtData || !jwtData.customerId || !jwtData.userId || jwtData.customerId != tokenId.value || jwtData.type != "user") throw { error: "Not authorized to access the sockets" };
 
-		return { userId: jwtData.userId, customerId: jwtData.customerId, id: collection.getUUID() };
+		return { userId: jwtData.userId, customerId: jwtData.customerId, allowed: jwtData.allowed, id: collection.getUUID() };
 	} catch (exe) {
-		return { userId: "", customerId: "", id: collection.getUUID() };
+		return { userId: "", customerId: "", allowed: "", id: collection.getUUID() };
 	}
 };
