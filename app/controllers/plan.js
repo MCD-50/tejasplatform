@@ -31,10 +31,10 @@ export const plans_create = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -60,10 +60,10 @@ export const plans_delete = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -90,10 +90,10 @@ export const plans_get = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -121,9 +121,9 @@ export const plans = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };

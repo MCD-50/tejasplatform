@@ -25,11 +25,11 @@ export const markets_create = async (req, res) => {
 
 		const customerfilter = { customerId: value.customerId };
 		const customerdata = await customer._getItem(customerfilter);
-		if (customerdata.error || !customerdata.value) return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		if (customerdata.error || !customerdata.value) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 
 		const countfilter = { customerId: value.customerId };
 		const countdata = await market._countAll(countfilter);
-		if (countdata.error || countdata.value == null) return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		if (countdata.error || countdata.value == null) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 
 		if (!customerdata.value.limit || Number(customerdata.value.limit) <= Number(countdata.value)) return res.status(422).json(collection.getJsonError({ error: "Cannot add more pairs" }));
 		if (!customerdata.value.allowed || !customerdata.value.allowed.includes(value.market)) return res.status(422).json(collection.getJsonError({ error: "Cannot be added" }));
@@ -39,10 +39,10 @@ export const markets_create = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -61,10 +61,10 @@ export const markets_delete = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -95,10 +95,10 @@ export const markets_get = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -134,9 +134,9 @@ export const markets = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };

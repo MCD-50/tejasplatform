@@ -1,3 +1,5 @@
+import moment from "moment";
+
 import * as collection from "../app/helper/collection";
 import * as constant from "../app/helper/constant";
 
@@ -19,6 +21,10 @@ export const requestCheck = async (req, res, next) => {
 
 		const jwtData = security.jwtDecode(req.headers.authorization);
 		if (!jwtData || !jwtData.customerId || jwtData.customerId != tokenId.value || jwtData.type != "user") return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
+
+		if (!jwtData.end || moment(jwtData.end).isBefore(moment())) {
+			return res.status(422).json(collection.getJsonError({ error: "Subscription expired" }));
+		}
 
 		// attach meta
 		const _meta = {

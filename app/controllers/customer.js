@@ -1,3 +1,4 @@
+import moment from "moment";
 import joi from "joi";
 
 import * as constant from "../helper/constant";
@@ -27,6 +28,10 @@ export const login = async (req, res) => {
 		const customerdata = await customer._getItem(filter);
 		if (customerdata.error || !customerdata.value || customerdata.value.freeze) return res.status(422).json(collection.getJsonError({ error: "Invalid user id or password" }));
 
+		if (customerdata.value.type == "user" && (!customerdata.value.end || moment(customerdata.value.end).isBefore(moment()))) {
+			return res.status(422).json(collection.getJsonError({ error: "Subscription expired" }));
+		}
+
 		const jwtpayload = {
 			customerId: customerdata.value.customerId,
 			userId: customerdata.value.userId,
@@ -39,7 +44,7 @@ export const login = async (req, res) => {
 		};
 
 		const authorization = security.jwtEncode(jwtpayload);
-		if (!authorization) return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		if (!authorization) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 
 		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(req.headers.device, authorization));
 		const data = await req.app.redisHelper.set(redKey1, customerdata.value.customerId);
@@ -58,10 +63,10 @@ export const login = async (req, res) => {
 			req.app.redisHelper.expire(redKey1, collection.parseEnvValue(process.env.REDIS_TOKEN_EXPIRE));
 			return res.status(200).json(collection.getJsonResponse({ result: { ...jwtpayload, authorization } }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -72,10 +77,10 @@ export const logout = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: true }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -113,17 +118,17 @@ export const customers_update = async (req, res) => {
 		if (value.allowed) payload.allowed = value.allowed;
 		if (value.freeze != null) payload.freeze = value.freeze;
 
-		if (Object.keys(payload).length < 1) return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		if (Object.keys(payload).length < 1) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 
 		const filter = { customerId: value.customerId };
 		const data = await customer._updateItem(filter, payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: true }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -152,10 +157,10 @@ export const customers_changepassword = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: true }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -185,10 +190,10 @@ export const customers_get = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
 
@@ -222,9 +227,9 @@ export const customers = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
 	} catch (exe) {
-		return res.status(400).json(collection.getJsonError({ error: "Somthing went wrong" }));
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
