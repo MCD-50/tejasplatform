@@ -39,7 +39,7 @@ const schema = {
 	},
 	amount: {
 		type: String,
-		default: "",
+		default: "0",
 	},
 	location: {
 		type: String,
@@ -59,8 +59,8 @@ const schema = {
 	},
 	
 	limit: {
-		type: Number,
-		default: 0
+		type: String,
+		default: "0",
 	},
 	allowed: {
 		type: String,

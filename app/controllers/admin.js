@@ -34,7 +34,7 @@ export const register = async (req, res) => {
 			name: value.name || "",
 			mobile: value.mobile || "",
 			email: value.email || "",
-			amount: value.amount || "",
+			amount: value.amount || "0",
 			location: value.location || "",
 			handler: value.handler || "",
 			start: value.start,
@@ -42,7 +42,7 @@ export const register = async (req, res) => {
 
 
 			type: value.type || "user",
-			limit: value.limit || 1,
+			limit: value.limit || "0",
 			allowed: value.allowed || ""
 		};
 

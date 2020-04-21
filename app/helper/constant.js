@@ -14,7 +14,7 @@ export const NOT_ALLOWED_UPDATE_FIELDS = ["_id", "customerId", "userId", "object
 // DB FETCHES
 export const DB_FETCH = {
 	// MONGO
-	customer: "_id customerId userId type name mobile email location handler start end limit allowed freeze createdAt updatedAt",
+	customer: "_id customerId userId type name mobile email location handler amount start end limit allowed freeze createdAt updatedAt",
 	activity: "_id customerId ipAddress device createdAt updatedAt",
 	market: "_id customerId market target createdAt updatedAt",
 	notification: "_id customerId title message createdAt updatedAt",
@@ -24,5 +24,5 @@ export const DB_FETCH = {
 
 export const CUSTOM_DB_FETCH = {
 	// MONGO
-	customer: "_id customerId userId password type name mobile email location handler start end limit allowed freeze createdAt updatedAt",
+	customer: "_id customerId userId password type name mobile email location handler amount start end limit allowed freeze createdAt updatedAt",
 };
