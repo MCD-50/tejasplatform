@@ -118,7 +118,7 @@ export const customers_update = async (req, res) => {
 		const filter = { customerId: value.customerId };
 		const data = await customer._updateItem(filter, payload);
 		if (data.value) {
-			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
+			return res.status(200).json(collection.getJsonResponse({ result: true }));
 		} else {
 			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
 		}
@@ -150,7 +150,7 @@ export const customers_changepassword = async (req, res) => {
 
 		const data = await customer._updateItem(filter, payload);
 		if (data.value) {
-			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
+			return res.status(200).json(collection.getJsonResponse({ result: true }));
 		} else {
 			return res.status(422).json(collection.getJsonError({ error: "Somthing went wrong" }));
 		}
