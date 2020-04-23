@@ -11,14 +11,14 @@ export const requestCheck = async (req, res, next) => {
 
 		// verify the token first
 		if (security.jwtVerify(req.headers.authorization) == false) return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
+		
+		const jwtData = security.jwtDecode(req.headers.authorization);
+		if (!jwtData || !jwtData.customerId || !jwtData.device || jwtData.type != "admin") return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
 
 		// check if token id in redis
-		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(req.headers.device, req.headers.authorization));
+		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtData.device, req.headers.authorization));
 		const tokenId = await req.app.redisHelper.get(redKey1);
-		if (!tokenId || tokenId.error || !tokenId.value) return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
-
-		const jwtData = security.jwtDecode(req.headers.authorization);
-		if (!jwtData || !jwtData.customerId || jwtData.customerId != tokenId.value || jwtData.type != "admin") return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
+		if (!tokenId || tokenId.error || !tokenId.value || tokenId.value != jwtData.customerId) return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
 
 		// attach meta
 		const _meta = {

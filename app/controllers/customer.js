@@ -40,6 +40,7 @@ export const login = async (req, res) => {
 			allowed: customerdata.value.allowed,
 			limit: customerdata.value.limit,
 			type: customerdata.value.type,
+			device: customerdata.value.device,
 			freeze: customerdata.value.freeze,
 		};
 
@@ -116,6 +117,7 @@ export const customers_update = async (req, res) => {
 
 		if (value.limit) payload.limit = value.limit;
 		if (value.allowed) payload.allowed = value.allowed;
+		if (value.device) payload.device = value.device;
 		if (value.freeze != null) payload.freeze = value.freeze;
 
 		if (Object.keys(payload).length < 1) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));

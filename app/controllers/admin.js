@@ -23,14 +23,14 @@ export const register = async (req, res) => {
 			error = inst.error;
 			value = inst.value;
 		}
-		
+
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const payload = {
 			customerId: collection.getUUID(),
 			userId: collection.getSeed(10),
 			password: security.hash(value.password),
-			
+
 			name: value.name || "",
 			mobile: value.mobile || "",
 			email: value.email || "",
@@ -43,7 +43,8 @@ export const register = async (req, res) => {
 
 			type: value.type || "user",
 			limit: value.limit || "0",
-			allowed: value.allowed || ""
+			allowed: value.allowed || "",
+			device: value.device || "mobile",
 		};
 
 		const data = await customer._createItem(payload);

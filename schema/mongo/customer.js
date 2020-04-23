@@ -66,6 +66,11 @@ const schema = {
 		type: String,
 		default: "",
 	},
+	device: {
+		type: String,
+		default: "mobile",
+		enum: ["mobile", "web", "all"]
+	},
 	freeze: {
 		type: Boolean,
 		default: false,
