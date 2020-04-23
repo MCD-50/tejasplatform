@@ -44,7 +44,7 @@ export const register = async (req, res) => {
 			type: value.type || "user",
 			limit: value.limit || "0",
 			allowed: value.allowed || "",
-			device: value.device || "mobile",
+			device: value.device || "all",
 		};
 
 		const data = await customer._createItem(payload);
