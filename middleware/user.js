@@ -32,6 +32,9 @@ export const requestCheck = async (req, res, next) => {
 			customerId: jwtData.customerId,
 		};
 
+		// reset the device
+		req.headers.device = jwtData.device;
+
 		// eslint-disable-next-line require-atomic-updates
 		req.meta = _meta;
 		return next();
