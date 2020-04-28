@@ -18,12 +18,12 @@ export const GET_ADMIN_NOTIFICATION_PAYLOAD = joi.object().keys({ customerId: jo
 export const GET_ADMIN_NOTIFICATIONS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }), page: joi.number().default(1), limit: joi.number().default(20) });
 
 // MARKET => mongo
-export const CREATE_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), market: joi.string().trim().valid(constant.setting.meta.markets).required(), target: joi.string().trim().required() });
+export const CREATE_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), profile: joi.string().trim().required(), market: joi.string().trim().valid(constant.setting.meta.markets).required(), target: joi.string().trim().required() });
 export const DELETE_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
-export const GET_USER_MARKETS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), page: joi.number().default(1), limit: joi.number().default(20) });
+export const GET_USER_MARKETS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), profile: joi.string().trim(), market: joi.string().trim().valid(constant.setting.meta.markets), target: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
 export const GET_ADMIN_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
-export const GET_ADMIN_MARKETS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }), market: joi.string().trim().valid(constant.setting.meta.markets), target: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
+export const GET_ADMIN_MARKETS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }), profile: joi.string().trim(), market: joi.string().trim().valid(constant.setting.meta.markets), target: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
 
 // CUSTOMER
 export const CREATE_ADMIN_CUSTOMER_PAYLOAD = joi.object().keys({ password: joi.string().trim().min(4).max(8).required(), type: joi.string().trim().valid(["user", "admin"]), name: joi.string().trim(), mobile: joi.string().trim(), email: joi.string().trim(), amount: joi.string().trim(), location: joi.string().trim(), handler: joi.string().trim(), start: joi.date().required(), end: joi.date().required(), allowed: joi.string().trim(), limit: joi.string().trim(), device: joi.string().trim().valid(["mobile", "web", "all"]) });

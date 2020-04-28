@@ -34,7 +34,7 @@ export const markets_create = async (req, res) => {
 		if (!customerdata.value.limit || Number(customerdata.value.limit) <= Number(countdata.value)) return res.status(422).json(collection.getJsonError({ error: "Cannot add more pairs" }));
 		if (!customerdata.value.allowed || !customerdata.value.allowed.includes(value.market)) return res.status(422).json(collection.getJsonError({ error: "Cannot be added" }));
 
-		const payload = { customerId: value.customerId, market: value.market, target: value.target };
+		const payload = { customerId: value.customerId, profile: value.profile, market: value.market, target: value.target };
 		const data = await market._createItem(payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
@@ -125,6 +125,7 @@ export const markets = async (req, res) => {
 
 		const filter = {};
 		if (value.customerId) filter.customerId = value.customerId;
+		if (value.profile) filter.profile = value.profile;
 		if (value.market) filter.market = value.market;
 		if (value.target) filter.target = value.target;
 		

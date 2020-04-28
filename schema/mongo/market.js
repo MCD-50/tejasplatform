@@ -8,6 +8,10 @@ const schema = {
 		type: String,
 		required: true,
 	},
+	profile: {
+		type: String,
+		required: true,
+	},
 	market: {
 		type: String,
 		required: true,
