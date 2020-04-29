@@ -99,6 +99,10 @@ export const customers_update = async (req, res) => {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.UPDATE_ADMIN_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
+		} else if (meta.api == api.USER) {
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.UPDATE_USER_CUSTOMER_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			error = inst.error;
+			value = inst.value;
 		}
 
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
