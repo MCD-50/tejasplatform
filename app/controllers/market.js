@@ -22,7 +22,6 @@ export const markets_create = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		// before adding check the allowed limit and existing limit
-
 		const customerfilter = { customerId: value.customerId };
 		const customerdata = await customer._getItem(customerfilter);
 		if (customerdata.error || !customerdata.value) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));

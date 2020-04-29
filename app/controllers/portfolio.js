@@ -7,6 +7,7 @@ import api from "../enum/api";
 
 // repo
 import portfolio from "../repository/portfolio";
+import customer from "../repository/customer";
 
 export const portfolios_create = async (req, res) => {
 	try {
@@ -18,6 +19,18 @@ export const portfolios_create = async (req, res) => {
 		const joiPayload = body && params && { ...body, ...params, ...collection.resolveDetailFromMeta(meta) } || null;
 		const { error, value } = joiPayload && joi.validate(joiPayload, joiHelper.CREATE_USER_PORTFOLIO_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
+
+		// before adding check the allowed limit and existing limit
+		const customerfilter = { customerId: value.customerId };
+		const customerdata = await customer._getItem(customerfilter);
+		if (customerdata.error || !customerdata.value) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+
+		const countfilter = { customerId: value.customerId };
+		const countdata = await portfolio._countAll(countfilter);
+		if (countdata.error || countdata.value == null) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+
+		if (!customerdata.value.limit || Number(customerdata.value.limit) <= Number(countdata.value)) return res.status(422).json(collection.getJsonError({ error: "Cannot add more pairs" }));
+		if (!customerdata.value.allowed || !customerdata.value.allowed.includes(value.market)) return res.status(422).json(collection.getJsonError({ error: "Cannot be added" }));
 
 		const payload = { 
 			customerId: value.customerId,

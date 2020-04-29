@@ -19,6 +19,7 @@ export const DB_FETCH = {
 	market: "_id customerId profile market target createdAt updatedAt",
 	notification: "_id customerId title message createdAt updatedAt",
 	plan: "_id name price createdAt updatedAt",
+	alert: "_id customerId market target price trigger createdAt updatedAt",
 	portfolio: "_id customerId market target price quantity createdAt updatedAt",
 };
 
