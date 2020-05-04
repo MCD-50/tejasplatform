@@ -51,6 +51,35 @@ export const alerts_create = async (req, res) => {
 	}
 };
 
+export const alerts_update = async (req, res) => {
+	try {
+		const meta = req.meta;
+
+		const params = req.params || null;
+
+		const joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta) } || null;
+		const { error, value } = joiPayload && joi.validate(joiPayload, joiHelper.UPDATE_USER_ALERT_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
+
+		const filter = { customerId: value.customerId, _id: value.objectId };
+		
+		const payload = {};
+		if (value.price) payload.price = value.price;
+		if (value.trigger) payload.trigger = value.trigger;
+
+		if (Object.keys(payload).length < 1) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
+	
+		const data = await alert._updateItem(filter, payload);
+		if (data.value) {
+			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
+		} else {
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+		}
+	} catch (exe) {
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
+	}
+};
+
 export const alerts_delete = async (req, res) => {
 	try {
 		const meta = req.meta;

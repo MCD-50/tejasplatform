@@ -19,6 +19,7 @@ export const GET_ADMIN_NOTIFICATIONS_PAYLOAD = joi.object().keys({ customerId: j
 
 // MARKET => mongo
 export const CREATE_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), profile: joi.string().trim().required(), market: joi.string().trim().valid(constant.setting.meta.markets).required(), target: joi.string().trim().required() });
+export const UPDATE_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required(), target: joi.string().trim() });
 export const DELETE_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_MARKETS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), profile: joi.string().trim(), market: joi.string().trim().valid(constant.setting.meta.markets), target: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
@@ -27,14 +28,16 @@ export const GET_ADMIN_MARKETS_PAYLOAD = joi.object().keys({ customerId: joi.str
 
 // PORTFOLIO => mongo
 export const CREATE_USER_PORTFOLIO_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), market: joi.string().trim().valid(constant.setting.meta.markets).required(), target: joi.string().trim().required(), price: joi.string().trim().regex(/^[0-9]{1,15}(\.[0-9]{1,8})?$/).required(), quantity: joi.string().trim().regex(/^[0-9]{1,15}(\.[0-9]{1,8})?$/).required() });
+export const UPDATE_USER_PORTFOLIO_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required(), price: joi.string().trim().regex(/^[0-9]{1,15}(\.[0-9]{1,8})?$/), quantity: joi.string().trim().regex(/^[0-9]{1,15}(\.[0-9]{1,8})?$/) });
 export const DELETE_USER_PORTFOLIO_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_PORTFOLIO_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_PORTFOLIOS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), market: joi.string().trim().valid(constant.setting.meta.markets), target: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
 export const GET_ADMIN_PORTFOLIO_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_ADMIN_PORTFOLIOS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }), market: joi.string().trim().valid(constant.setting.meta.markets), target: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
 
-// PORTFOLIO => mongo
-export const CREATE_USER_ALERT_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), market: joi.string().trim().valid(constant.setting.meta.markets).required(), target: joi.string().trim().required(), price: joi.string().trim().regex(/^[0-9]{1,15}(\.[0-9]{1,8})?$/).required(), trigger: joi.string().trim() });
+// ALERT => mongo
+export const CREATE_USER_ALERT_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), market: joi.string().trim().valid(constant.setting.meta.markets).required(), target: joi.string().trim().required(), price: joi.string().trim().regex(/^[0-9]{1,15}(\.[0-9]{1,8})?$/).required(), trigger: joi.string().trim().required() });
+export const UPDATE_USER_ALERT_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required(), price: joi.string().trim().regex(/^[0-9]{1,15}(\.[0-9]{1,8})?$/), trigger: joi.string().trim().required() });
 export const DELETE_USER_ALERT_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_ALERT_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_ALERTS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), market: joi.string().trim().valid(constant.setting.meta.markets), target: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });

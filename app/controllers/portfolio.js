@@ -32,15 +32,44 @@ export const portfolios_create = async (req, res) => {
 		if (!customerdata.value.limit || Number(customerdata.value.limit) <= Number(countdata.value)) return res.status(422).json(collection.getJsonError({ error: "Cannot add more pairs" }));
 		if (!customerdata.value.allowed || !customerdata.value.allowed.includes(value.market)) return res.status(422).json(collection.getJsonError({ error: "Cannot be added" }));
 
-		const payload = { 
+		const payload = {
 			customerId: value.customerId,
-			market: value.market, 
+			market: value.market,
 			target: value.target,
 			price: value.price,
 			quantity: value.quantity
 		};
 
 		const data = await portfolio._createItem(payload);
+		if (data.value) {
+			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
+		} else {
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+		}
+	} catch (exe) {
+		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
+	}
+};
+
+export const portfolios_update = async (req, res) => {
+	try {
+		const meta = req.meta;
+
+		const params = req.params || null;
+
+		const joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta) } || null;
+		const { error, value } = joiPayload && joi.validate(joiPayload, joiHelper.UPDATE_USER_PORTFOLIO_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
+
+		const filter = { customerId: value.customerId, _id: value.objectId };
+
+		const payload = {};
+		if (value.price) payload.price = value.price;
+		if (value.quantity) payload.quantity = value.quantity;
+
+		if (Object.keys(payload).length < 1) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
+
+		const data = await portfolio._updateItem(filter, payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
@@ -72,6 +101,7 @@ export const portfolios_delete = async (req, res) => {
 		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
 	}
 };
+
 
 export const portfolios_get = async (req, res) => {
 	try {
@@ -132,7 +162,7 @@ export const portfolios = async (req, res) => {
 		if (value.customerId) filter.customerId = value.customerId;
 		if (value.market) filter.market = value.market;
 		if (value.target) filter.target = value.target;
-		
+
 		const paging = { page: value.page, limit: value.limit };
 
 		const data = await portfolio._filterItem(filter, paging);

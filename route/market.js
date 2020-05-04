@@ -7,6 +7,7 @@ export const routes = [
 	// customer API calls
 	{ method: "post", endPoint: "markets_create@markets/create", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) }, //
 	{ method: "get", endPoint: "markets_get@markets/get/:customerId/:objectId", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) }, //
+	{ method: "put", endPoint: "markets_update@markets/update/:customerId/:objectId", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) }, //
 	{ method: "delete", endPoint: "markets_delete@markets/delete/:customerId/:objectId", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) },
 	{ method: "get", endPoint: "markets@markets", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) },
 
