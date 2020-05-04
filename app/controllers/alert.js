@@ -55,9 +55,10 @@ export const alerts_update = async (req, res) => {
 	try {
 		const meta = req.meta;
 
+		const body = req.body || null;
 		const params = req.params || null;
 
-		const joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta) } || null;
+		const joiPayload = body && params && { ...body, ...params, ...collection.resolveDetailFromMeta(meta) } || null;
 		const { error, value } = joiPayload && joi.validate(joiPayload, joiHelper.UPDATE_USER_ALERT_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
