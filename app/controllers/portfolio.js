@@ -72,7 +72,7 @@ export const portfolios_update = async (req, res) => {
 
 		const data = await portfolio._updateItem(filter, payload);
 		if (data.value) {
-			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
+			return res.status(200).json(collection.getJsonResponse({ result: true }));
 		} else {
 			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 		}
