@@ -10,8 +10,8 @@ import circit from "../helper/circit";
 export const _read = (app, fileurl, mom) => {
 	// now read the file using pipe
 	piper.stream(fileurl, obj => {
-		const market = String(obj.market).toLowerCase().split(" ").join("_");
-		const target = String(obj.target).toLowerCase().split(" ").join("_");
+		const market = String(obj.market);
+		const target = String(obj.target);
 
 		if (market && target) {
 			// check if valid pair
@@ -37,8 +37,8 @@ export const _read = (app, fileurl, mom) => {
 export const _persist = (app, fileurl, mom) => {
 	// now read the file using pipe
 	piper.stream(fileurl, obj => {
-		const market = String(obj.market).toLowerCase().split(" ").join("_");
-		const target = String(obj.target).toLowerCase().split(" ").join("_");
+		const market = String(obj.market);
+		const target = String(obj.target);
 
 		if (market && target) {
 			// check if valid pair

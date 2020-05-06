@@ -11,40 +11,67 @@ class Piper {
 					for (var i = 1; i < x.data.length; i++) {
 						const items = x.data[i].slice();
 
-						if ((items[header.indexOf("Exch.")] != null && items[header.indexOf("Exch.")] != undefined)
-							&& (items[header.indexOf("Descr.")] != null && items[header.indexOf("Descr.")] != undefined)
-							&& (items[header.indexOf("Bid Qty")] != null && items[header.indexOf("Bid Qty")] != undefined)
-							&& (items[header.indexOf("Ask Qty")] != null && items[header.indexOf("Ask Qty")] != undefined)
-							&& (items[header.indexOf("Bid")] != null && items[header.indexOf("Bid")] != undefined)
-							&& (items[header.indexOf("Ask")] != null && items[header.indexOf("Ask")] != undefined)
-							&& (items[header.indexOf("LTP")] != null && items[header.indexOf("LTP")] != undefined)
-							&& (items[header.indexOf("Volume")] != null && items[header.indexOf("Volume")] != undefined)
-							&& (items[header.indexOf("%Chg")] != null && items[header.indexOf("%Chg")] != undefined)
-							&& (items[header.indexOf("NetChg")] != null && items[header.indexOf("NetChg")] != undefined)
-							&& (items[header.indexOf("High")] != null && items[header.indexOf("High")] != undefined)
-							&& (items[header.indexOf("Low")] != null && items[header.indexOf("Low")] != undefined)
-							&& (items[header.indexOf("Open")] != null && items[header.indexOf("Open")] != undefined)
-							&& (items[header.indexOf("OI")] != null && items[header.indexOf("OI")] != undefined)
-							&& (items[header.indexOf("Close")] != null && items[header.indexOf("Close")] != undefined)) {
+						try {
+							const market = items[header.indexOf("Exch.")] || null;
+							const target = items[header.indexOf("Descr.")] || null;
+							const time = items[header.indexOf("Time")] || null;
+							const bid_qty = items[header.indexOf("Bid Qty")] || null;
+							const bid = items[header.indexOf("Bid")] || null;
+							const ask = items[header.indexOf("Ask")] || null;
+							const ask_qty = items[header.indexOf("Ask Qty")] || null;
+							const ltp = items[header.indexOf("LTP")] || null;
+							const net_chg = items[header.indexOf("NetChg")] || null;
+							const percent_chg = items[header.indexOf("%Chg")] || null;
+							const volume = items[header.indexOf("Volume")] || null;
+							const open = items[header.indexOf("Open")] || null;
+							const high = items[header.indexOf("High")] || null;
+							const low = items[header.indexOf("Low")] || null;
+							const close = items[header.indexOf("Close")] || null;
+							const year_high = items[header.indexOf("52WkHigh")] || null;
+							const year_low = items[header.indexOf("52WkLow")] || null;
+							const oi = items[header.indexOf("OI")] || null;
+							const net_chg_oi = items[header.indexOf("NetChgOI")] || null;
+							const percent_chg_oi = items[header.indexOf("%ChgOI")] || null;
+							const tbq = items[header.indexOf("TBQ")] || null;
+							const taq = items[header.indexOf("TAQ")] || null;
+							const atp = items[header.indexOf("ATP")] || null;
+							const value_mln = items[header.indexOf("Value(Mln)")] || null;
+							const market_lot = items[header.indexOf("Market Lot")] || null;
+							const pqu = items[header.indexOf("PQU")] || null;
+
+							if (market == null || target == null) continue;
 							const entry = {
-								market: items[header.indexOf("Exch.")],
-								target: items[header.indexOf("Descr.")],
-								bid_qty: items[header.indexOf("Bid Qty")],
-								ask_qty: items[header.indexOf("Ask Qty")],
-								bid: items[header.indexOf("Bid")],
-								ask: items[header.indexOf("Ask")],
-								ltp: items[header.indexOf("LTP")],
-								volume: items[header.indexOf("Volume")],
-								change: items[header.indexOf("%Chg")],
-								net_change: items[header.indexOf("NetChg")],
-								high: items[header.indexOf("High")],
-								low: items[header.indexOf("Low")],
-								open: items[header.indexOf("Open")],
-								open_interest: items[header.indexOf("OI")],
-								close: items[header.indexOf("Close")],
+								market: market,
+								target: target,
+								time: time,
+								bid_qty: bid_qty,
+								bid: bid,
+								ask: ask,
+								ask_qty: ask_qty,
+								ltp: ltp,
+								net_chg: net_chg,
+								percent_chg: percent_chg,
+								volume: volume,
+								open: open,
+								high: high,
+								low: low,
+								close: close,
+								year_high: year_high,
+								year_low: year_low,
+								oi: oi,
+								net_chg_oi: net_chg_oi,
+								percent_chg_oi: percent_chg_oi,
+								tbq: tbq,
+								taq: taq,
+								atp: atp,
+								value_mln: value_mln,
+								market_lot: market_lot,
+								pqu: pqu
 							};
 
 							callback({ ...entry });
+						} catch (exe) {
+							console.log(exe);
 						}
 					}
 				}
