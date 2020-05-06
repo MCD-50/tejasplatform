@@ -20,9 +20,11 @@ class Piper {
 							&& (items[header.indexOf("LTP")] != null && items[header.indexOf("LTP")] != undefined)
 							&& (items[header.indexOf("Volume")] != null && items[header.indexOf("Volume")] != undefined)
 							&& (items[header.indexOf("%Chg")] != null && items[header.indexOf("%Chg")] != undefined)
+							&& (items[header.indexOf("NetChg")] != null && items[header.indexOf("NetChg")] != undefined)
 							&& (items[header.indexOf("High")] != null && items[header.indexOf("High")] != undefined)
 							&& (items[header.indexOf("Low")] != null && items[header.indexOf("Low")] != undefined)
 							&& (items[header.indexOf("Open")] != null && items[header.indexOf("Open")] != undefined)
+							&& (items[header.indexOf("OI")] != null && items[header.indexOf("OI")] != undefined)
 							&& (items[header.indexOf("Close")] != null && items[header.indexOf("Close")] != undefined)) {
 							const entry = {
 								market: items[header.indexOf("Exch.")],
@@ -34,9 +36,11 @@ class Piper {
 								ltp: items[header.indexOf("LTP")],
 								volume: items[header.indexOf("Volume")],
 								change: items[header.indexOf("%Chg")],
+								net_change: items[header.indexOf("NetChg")],
 								high: items[header.indexOf("High")],
 								low: items[header.indexOf("Low")],
 								open: items[header.indexOf("Open")],
+								open_interest: items[header.indexOf("OI")],
 								close: items[header.indexOf("Close")],
 							};
 
