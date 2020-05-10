@@ -16,11 +16,12 @@ export const DB_FETCH = {
 	// MONGO
 	customer: "_id customerId userId type name mobile email location handler amount start end limit allowed device freeze createdAt updatedAt",
 	activity: "_id customerId ipAddress device createdAt updatedAt",
-	market: "_id customerId profile market target createdAt updatedAt",
-	notification: "_id customerId title message createdAt updatedAt",
+	market: "_id customerId profile market target uniqueKey createdAt updatedAt",
+	notification: "_id customerId title message link createdAt updatedAt",
+	announcement: "_id title message link createdAt updatedAt",
 	plan: "_id name price createdAt updatedAt",
-	alert: "_id customerId market target price trigger createdAt updatedAt",
-	portfolio: "_id customerId market target price quantity createdAt updatedAt",
+	alert: "_id customerId market target uniqueKey price trigger createdAt updatedAt",
+	portfolio: "_id customerId market target uniqueKey price quantity createdAt updatedAt",
 };
 
 

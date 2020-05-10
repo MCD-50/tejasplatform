@@ -36,6 +36,7 @@ export const portfolios_create = async (req, res) => {
 			customerId: value.customerId,
 			market: value.market,
 			target: value.target,
+			uniqueKey: `${value.customerId}:${value.market}:${value.target}`,
 			price: value.price,
 			quantity: value.quantity
 		};
@@ -44,7 +45,7 @@ export const portfolios_create = async (req, res) => {
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong or duplicate entry" }));
 		}
 	} catch (exe) {
 		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));

@@ -8,13 +8,17 @@ const schema = {
 		type: String,
 		required: true,
 	},
-	title: { // account identifier
+	title: {
 		type: String,
 		required: true,
 	},
 	message: {
 		type: String,
 		required: true,
+	},
+	link: {
+		type: String,
+		required: false,
 	},
 	createdAt: {
 		type: Date,

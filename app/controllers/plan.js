@@ -80,6 +80,10 @@ export const plans_get = async (req, res) => {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_PLAN_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
+		} else if (meta.api == api.USER) {
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_PLAN_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			error = inst.error;
+			value = inst.value;
 		}
 
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
@@ -108,6 +112,10 @@ export const plans = async (req, res) => {
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_PLANS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			error = inst.error;
+			value = inst.value;
+		} else if (meta.api == api.USER) {
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_PLANS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
 		}

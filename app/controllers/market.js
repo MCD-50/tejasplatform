@@ -33,12 +33,19 @@ export const markets_create = async (req, res) => {
 		if (!customerdata.value.limit || Number(customerdata.value.limit) <= Number(countdata.value)) return res.status(422).json(collection.getJsonError({ error: "Cannot add more pairs" }));
 		if (!customerdata.value.allowed || !customerdata.value.allowed.includes(value.market)) return res.status(422).json(collection.getJsonError({ error: "Cannot be added" }));
 
-		const payload = { customerId: value.customerId, profile: value.profile, market: value.market, target: value.target };
+		const payload = { 
+			customerId: value.customerId, 
+			profile: value.profile, 
+			market: value.market, 
+			target: value.target,
+			uniqueKey: `${value.customerId}:${value.market}:${value.target}`,
+		};
+
 		const data = await market._createItem(payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
-			return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+			return res.status(422).json(collection.getJsonError({ error: "Something went wrong or duplicate entry" }));
 		}
 	} catch (exe) {
 		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));
@@ -57,12 +64,19 @@ export const markets_update = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const filter = { customerId: value.customerId, _id: value.objectId };
-		
+
+		// get the market
+		const marketdata = await market._getItem(filter);
+		if (marketdata.error || !marketdata.value) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+
 		const payload = {};
-		if (value.target) payload.target = value.target;
+		if (value.target) {
+			payload.target = value.target;
+			payload.uniqueKey = `${marketdata.value.customerId}:${marketdata.value.market}:${value.target}`;
+		}
 		
 		if (Object.keys(payload).length < 1) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
-		
+
 		const data = await market._updateItem(filter, payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: true }));

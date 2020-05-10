@@ -5,10 +5,12 @@ export const routePath = require("path").join(__dirname, "../app/controllers/not
 
 export const routes = [
 	// customer API calls
-	{ method: "get", endPoint: "notifications_get@notifications/get/:customerId/:objectId", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) }, //
+	{ method: "get", endPoint: "notifications_get@notifications/get/:customerId/:objectId", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) },
 	{ method: "get", endPoint: "notifications@notifications", routePrefix: collection.parseEnvValue(process.env.ROUTE_PREFIX) },
-
+	
 	// admin API calls
+	{ method: "post", endPoint: "notifications_create@notifications/create", routePrefix: collection.parseEnvValue(process.env.ADMIN_ROUTE_PREFIX), adminMiddleware: true },
 	{ method: "get", endPoint: "notifications_get@notifications/get/:customerId/:objectId", routePrefix: collection.parseEnvValue(process.env.ADMIN_ROUTE_PREFIX), adminMiddleware: true },
+	{ method: "delete", endPoint: "notifications_delete@notifications/delete/:customerId/:objectId", routePrefix: collection.parseEnvValue(process.env.ADMIN_ROUTE_PREFIX), adminMiddleware: true },
 	{ method: "get", endPoint: "notifications@notifications", routePrefix: collection.parseEnvValue(process.env.ADMIN_ROUTE_PREFIX), adminMiddleware: true },
 ];

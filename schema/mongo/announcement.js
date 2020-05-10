@@ -4,30 +4,17 @@ const mongoose = require("mongoose");
 import factory from "../../app/helper/factory";
 
 const schema = {
-	customerId: {
+	title: {
 		type: String,
 		required: true,
 	},
-	market: {
+	message: {
 		type: String,
 		required: true,
 	},
-	target: {
+	link: {
 		type: String,
-		required: true,
-	},
-	uniqueKey: {
-		unique: true,
-		type: String,
-		required: true,
-	},
-	price: {
-		type: String,
-		required: true,
-	},
-	trigger: {
-		type: String,
-		required: true,
+		required: false,
 	},
 	createdAt: {
 		type: Date,
@@ -45,7 +32,7 @@ const initSchema = (app) => {
 	_schema.plugin(require("./plugins/paging"));
 	// setup indexes
 	_schema.index({ customerId: 1 });
-	factory.addInstance("alert", app.mongoClient.model("alerts", _schema));
+	factory.addInstance("announcement", app.mongoClient.model("announcements", _schema));
 };
 
 export default initSchema;

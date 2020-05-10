@@ -20,6 +20,11 @@ const schema = {
 		type: String,
 		required: true,
 	},
+	uniqueKey: {
+		unique: true,
+		type: String,
+		required: true,
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now

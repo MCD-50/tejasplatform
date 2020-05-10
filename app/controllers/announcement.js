@@ -6,9 +6,9 @@ import * as joiHelper from "../helper/joiHelper";
 import api from "../enum/api";
 
 // repo
-import notification from "../repository/notification";
+import announcement from "../repository/announcement";
 
-export const notifications_create = async (req, res) => {
+export const announcements_create = async (req, res) => {
 	try {
 		const meta = req.meta;
 
@@ -18,7 +18,7 @@ export const notifications_create = async (req, res) => {
 
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
-			const inst = joiPayload && joi.validate(joiPayload, joiHelper.CREATE_ADMIN_NOTIFICATION_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.CREATE_ADMIN_ANNOUNCEMENT_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
 		}
@@ -26,7 +26,7 @@ export const notifications_create = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const payload = { name: value.name, price: value.price };
-		const data = await notification._createItem(payload);
+		const data = await announcement._createItem(payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
@@ -37,7 +37,7 @@ export const notifications_create = async (req, res) => {
 	}
 };
 
-export const notifications_delete = async (req, res) => {
+export const announcements_delete = async (req, res) => {
 	try {
 		const meta = req.meta;
 
@@ -47,7 +47,7 @@ export const notifications_delete = async (req, res) => {
 
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
-			const inst = joiPayload && joi.validate(joiPayload, joiHelper.DELETE_ADMIN_NOTIFICATION_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.DELETE_ADMIN_ANNOUNCEMENT_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
 		}
@@ -55,7 +55,7 @@ export const notifications_delete = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const filter = { _id: value.objectId };
-		const data = await notification._deleteItem(filter);
+		const data = await announcement._deleteItem(filter);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
@@ -66,7 +66,7 @@ export const notifications_delete = async (req, res) => {
 	}
 };
 
-export const notifications_get = async (req, res) => {
+export const announcements_get = async (req, res) => {
 	try {
 		const meta = req.meta;
 
@@ -76,11 +76,11 @@ export const notifications_get = async (req, res) => {
 
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
-			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_NOTIFICATION_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_ANNOUNCEMENT_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
 		} else if (meta.api == api.USER) {
-			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_NOTIFICATION_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_ANNOUNCEMENT_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
 		}
@@ -89,7 +89,7 @@ export const notifications_get = async (req, res) => {
 
 		const filter = { customerId: value.customerId, _id: value.objectId };
 		
-		const data = await notification._getItem(filter);
+		const data = await announcement._getItem(filter);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {
@@ -100,7 +100,7 @@ export const notifications_get = async (req, res) => {
 	}
 };
 
-export const notifications = async (req, res) => {
+export const announcements = async (req, res) => {
 	try {
 		const meta = req.meta;
 
@@ -110,11 +110,11 @@ export const notifications = async (req, res) => {
 
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
-			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_NOTIFICATIONS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_ADMIN_ANNOUNCEMENTS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
 		} else if (meta.api == api.USER) {
-			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_NOTIFICATIONS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
+			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_ANNOUNCEMENTS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
 		}
@@ -126,7 +126,7 @@ export const notifications = async (req, res) => {
 		
 		const paging = { page: value.page, limit: value.limit };
 
-		const data = await notification._filterItem(filter, paging);
+		const data = await announcement._filterItem(filter, paging);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
 		} else {

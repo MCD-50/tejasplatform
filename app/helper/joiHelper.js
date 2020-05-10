@@ -12,10 +12,20 @@ export const GET_ADMIN_ACTIVITY_PAYLOAD = joi.object().keys({ customerId: joi.st
 export const GET_ADMIN_ACTIVITIES_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }), ipAddress: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
 
 // NOTIFICATION => mongo
+export const CREATE_ADMIN_NOTIFICATION_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), title: joi.string().trim().required(), message: joi.string().trim().required(), link: joi.string().trim() });
+export const DELETE_ADMIN_NOTIFICATION_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_NOTIFICATION_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_NOTIFICATIONS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), page: joi.number().default(1), limit: joi.number().default(20) });
 export const GET_ADMIN_NOTIFICATION_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_ADMIN_NOTIFICATIONS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }), page: joi.number().default(1), limit: joi.number().default(20) });
+
+// ANNOUNCEMENT => mongo
+export const CREATE_ADMIN_ANNOUNCEMENT_PAYLOAD = joi.object().keys({ title: joi.string().trim().required(), message: joi.string().trim().required(), link: joi.string().trim() });
+export const DELETE_ADMIN_ANNOUNCEMENT_PAYLOAD = joi.object().keys({ objectId: joi.string().trim().hex().length(24).required() });
+export const GET_USER_ANNOUNCEMENT_PAYLOAD = joi.object().keys({ objectId: joi.string().trim().hex().length(24).required() });
+export const GET_USER_ANNOUNCEMENTS_PAYLOAD = joi.object().keys({ page: joi.number().default(1), limit: joi.number().default(20) });
+export const GET_ADMIN_ANNOUNCEMENT_PAYLOAD = joi.object().keys({ objectId: joi.string().trim().hex().length(24).required() });
+export const GET_ADMIN_ANNOUNCEMENTS_PAYLOAD = joi.object().keys({ page: joi.number().default(1), limit: joi.number().default(20) });
 
 // MARKET => mongo
 export const CREATE_USER_MARKET_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), profile: joi.string().trim().required(), market: joi.string().trim().valid(constant.setting.meta.markets).required(), target: joi.string().trim().required() });
@@ -44,7 +54,6 @@ export const GET_USER_ALERTS_PAYLOAD = joi.object().keys({ customerId: joi.strin
 export const GET_ADMIN_ALERT_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }).required(), objectId: joi.string().trim().hex().length(24).required() });
 export const GET_ADMIN_ALERTS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }), market: joi.string().trim().valid(constant.setting.meta.markets), target: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
 
-
 // CUSTOMER
 export const CREATE_ADMIN_CUSTOMER_PAYLOAD = joi.object().keys({ password: joi.string().trim().min(4).max(8).required(), type: joi.string().trim().valid(["user", "admin"]), name: joi.string().trim(), mobile: joi.string().trim().regex(/^[0-9]+/), email: joi.string().trim(), amount: joi.string().trim().regex(/^[0-9]{1,15}(\.[0-9]{1,8})?$/), location: joi.string().trim(), handler: joi.string().trim(), start: joi.date().required(), end: joi.date().required(), allowed: joi.string().trim(), limit: joi.string().trim(), device: joi.string().trim().valid(["mobile", "web", "all"]) });
 export const LOGIN_PAYLOAD = joi.object().keys({ userId: joi.string().trim().length(10).required(), password: joi.string().trim().min(4).max(8).required() });
@@ -58,7 +67,7 @@ export const GET_ADMIN_CUSTOMERS_PAYLOAD = joi.object().keys({ customerId: joi.s
 // PLAN => mongo
 export const CREATE_ADMIN_PLAN_PAYLOAD = joi.object().keys({ name: joi.string().trim().required(), price: joi.string().required() });
 export const DELETE_ADMIN_PLAN_PAYLOAD = joi.object().keys({ objectId: joi.string().trim().hex().length(24).required() });
+export const GET_USER_PLAN_PAYLOAD = joi.object().keys({ objectId: joi.string().trim().hex().length(24).required() });
+export const GET_USER_PLANS_PAYLOAD = joi.object().keys({ page: joi.number().default(1), limit: joi.number().default(20) });
 export const GET_ADMIN_PLAN_PAYLOAD = joi.object().keys({ objectId: joi.string().trim().hex().length(24).required() });
 export const GET_ADMIN_PLANS_PAYLOAD = joi.object().keys({ page: joi.number().default(1), limit: joi.number().default(20) });
-
-
