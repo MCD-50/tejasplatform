@@ -73,7 +73,7 @@ export const plans_get = async (req, res) => {
 
 		const params = req.params || null;
 
-		const joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta) } || null;
+		let joiPayload = params && { ...params, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
@@ -81,6 +81,7 @@ export const plans_get = async (req, res) => {
 			error = inst.error;
 			value = inst.value;
 		} else if (meta.api == api.USER) {
+			joiPayload = params && { ...params } || null;
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_PLAN_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
@@ -107,7 +108,7 @@ export const plans = async (req, res) => {
 
 		const query = req.query || null;
 
-		const joiPayload = query && { ...query, ...collection.resolveDetailFromMeta(meta) } || null;
+		let joiPayload = query && { ...query, ...collection.resolveDetailFromMeta(meta) } || null;
 
 		let error = null, value = null;
 		if (meta.api == api.ADMIN) {
@@ -115,6 +116,7 @@ export const plans = async (req, res) => {
 			error = inst.error;
 			value = inst.value;
 		} else if (meta.api == api.USER) {
+			joiPayload = query && { ...query } || null;
 			const inst = joiPayload && joi.validate(joiPayload, joiHelper.GET_USER_PLANS_PAYLOAD) || joiHelper.DEFAULT_JOI_RESPONSE;
 			error = inst.error;
 			value = inst.value;
