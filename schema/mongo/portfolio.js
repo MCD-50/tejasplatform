@@ -17,9 +17,9 @@ const schema = {
 		required: true,
 	},
 	uniqueKey: {
-		unique: true,
 		type: String,
 		required: true,
+		unique: true
 	},
 	price: {
 		type: String,

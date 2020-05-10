@@ -7,6 +7,7 @@ const schema = {
 	name: { // account identifier
 		type: String,
 		required: true,
+		unique: true
 	},
 	price: {
 		type: String,
