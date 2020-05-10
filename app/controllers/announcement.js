@@ -25,7 +25,13 @@ export const announcements_create = async (req, res) => {
 
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
-		const payload = { name: value.name, price: value.price };
+		const payload = { 
+			title: value.title, 
+			message: value.message, 
+		};
+
+		if (value.link) payload.link = value.link;
+
 		const data = await announcement._createItem(payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
@@ -87,8 +93,8 @@ export const announcements_get = async (req, res) => {
 
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
-		const filter = { customerId: value.customerId, _id: value.objectId };
-		
+		const filter = { _id: value.objectId };
+
 		const data = await announcement._getItem(filter);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
@@ -122,8 +128,6 @@ export const announcements = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const filter = {};
-		if (value.customerId) filter.customerId = value.customerId;
-		
 		const paging = { page: value.page, limit: value.limit };
 
 		const data = await announcement._filterItem(filter, paging);

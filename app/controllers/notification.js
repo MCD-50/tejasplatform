@@ -25,7 +25,14 @@ export const notifications_create = async (req, res) => {
 
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
-		const payload = { name: value.name, price: value.price };
+		const payload = { 
+			customerId: value.customerId, 
+			title: value.title, 
+			message: value.message, 
+		};
+
+		if (value.link) payload.link = value.link;
+		
 		const data = await notification._createItem(payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
@@ -54,7 +61,8 @@ export const notifications_delete = async (req, res) => {
 
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
-		const filter = { _id: value.objectId };
+		const filter = { customerId: value.customerId, _id: value.objectId };
+		
 		const data = await notification._deleteItem(filter);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
@@ -88,7 +96,7 @@ export const notifications_get = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const filter = { customerId: value.customerId, _id: value.objectId };
-		
+
 		const data = await notification._getItem(filter);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
