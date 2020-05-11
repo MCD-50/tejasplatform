@@ -45,10 +45,10 @@ export const _persist = (app, fileurl, mom) => {
 			if (!constant.setting.meta.markets.includes(market)) return null;
 
 			const pair = collection.prepareRedisKey(market, collection.prepareRedisKey("div", target));
-			const buffer = collection.getStringFromJson(obj);
+			// const buffer = collection.getStringFromJson(obj);
 
 			// add to redis
-			app.redisHelper.hmset(constant.TICKER_MAP, pair, buffer);
+			// app.redisHelper.hmset(constant.TICKER_MAP, pair, buffer);
 
 			// at last
 			circit.set_pairs(pair);
