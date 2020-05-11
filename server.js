@@ -132,7 +132,13 @@ mongoose.connection.on("open", () => {
 	server.listen(collection.parseEnvValue(process.env.PORT), collection.parseEnvValue(process.env.HOST), async () => {
 		console.log("APP", `Server running on port ${collection.parseEnvValue(process.env.PORT)} and on host ${collection.parseEnvValue(process.env.HOST)}.....`);
 		process.on("unhandledRejection", (reason, promise) => {
-			console.log("APP_ERROR", `Uncaught error in ${collection.getStringFromJson(reason)}`, collection.getStringFromJson(promise));
+			console.log("APP_ERROR", "Uncaught error in", reason, promise);
+			process.exit(0);
+		});
+
+		process.on("uncaughtException", (reason, promise) => {
+			console.log("APP_ERROR", "Uncaught error in", reason, promise);
+			process.exit(0);
 		});
 
 		process.once("SIGTERM", () => {
