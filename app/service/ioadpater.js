@@ -14,7 +14,7 @@ export const _initialize = (app, io_server) => {
 		port: collection.parseEnvValue(process.env.REDIS_PORT),
 	}));
 
-	io_server.of("/").adapter.on("error", function(){
+	io_server.of("/").adapter.on("error", () => {
 		console.log("Safe handling socket.io-redis error");
 	});
 
@@ -49,7 +49,7 @@ export const _initialize = (app, io_server) => {
 
 					// join error
 					if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
-					// if (!constant.setting.meta.markets.includes(name)) {
+						// if (!constant.setting.meta.markets.includes(name)) {
 						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "Room name is not valid" } });
 					}
 
@@ -83,7 +83,7 @@ export const _initialize = (app, io_server) => {
 
 					// leave error
 					if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
-					// if (!constant.setting.meta.markets.includes(name)) {
+						// if (!constant.setting.meta.markets.includes(name)) {
 						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "Room name is not valid" } });
 					}
 
@@ -118,7 +118,7 @@ const _parse_user_detail = async (app, socket) => {
 		// check if token id in redis
 		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtData.device, socket.handshake.query["authorization"]));
 		const tokenId = await app.redisHelper.get(redKey1);
-		if (!tokenId || tokenId.error || !tokenId.value || tokenId.value != jwtData.customerId ) throw { error: "Not authorized to access the sockets" };
+		if (!tokenId || tokenId.error || !tokenId.value || tokenId.value != jwtData.customerId) throw { error: "Not authorized to access the sockets" };
 
 		return { userId: jwtData.userId, customerId: jwtData.customerId, allowed: jwtData.allowed, id: collection.getUUID() };
 	} catch (exe) {

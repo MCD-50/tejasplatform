@@ -88,6 +88,14 @@ mongoose.connection.on("open", () => {
 			host: collection.parseEnvValue(process.env.REDIS_HOST),
 			port: collection.parseEnvValue(process.env.REDIS_PORT),
 		}));
+
+		app.emitter.redis.on("error", () => {
+			console.log("Safe handling socket.io-emmiter error");
+		});
+	});
+
+	redisClient.on("error", () => {
+		console.log("Safe handling redis error");
 	});
 
 	// setup kue
