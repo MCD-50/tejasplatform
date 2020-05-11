@@ -7,10 +7,11 @@ import api from "../app/enum/api";
 export const requestCheck = async (req, res, next) => {
 	try {
 		// validate headers
-		if (!req.headers || !req.headers["user-agent"]) return res.status(400).json(collection.getJsonError({ error: "Unable to get headers" }));
+		// if (!req.headers || !req.headers["user-agent"]) return res.status(400).json(collection.getJsonError({ error: "Unable to get headers" }));
+		if (!req.headers) return res.status(400).json(collection.getJsonError({ error: "Unable to get headers" }));
 
 		// eslint-disable-next-line require-atomic-updates
-		req.headers.device = collection.parseUserAgent(req.headers["user-agent"]);
+		req.headers.device = "unknown";
 
 		// attach meta
 		const _meta = {

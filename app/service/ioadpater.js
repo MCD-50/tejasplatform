@@ -102,18 +102,19 @@ export const _initialize = (app, io_server) => {
 // internal method
 const _parse_user_detail = async (app, socket) => {
 	try {
-		if (!socket.handshake.query["authorization"] || socket.request.headers["user-agent"]) throw { error: "Not authorized to access the sockets" };
+		// if (!socket.handshake.query["authorization"] || socket.request.headers["user-agent"]) throw { error: "Not authorized to access the sockets" };
+		if (!socket.handshake.query["authorization"]) throw { error: "Not authorized to access the sockets" };
 
 		// now check if token can be parsed
 		if (security.jwtVerify(socket.handshake.query["authorization"]) == false) throw { error: "Not authorized to access the sockets" };
 
-		// check if token id in redis
-		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(collection.parseUserAgent(socket.request.headers["user-agent"]), socket.handshake.query["authorization"]));
-		const tokenId = await app.redisHelper.get(redKey1);
-		if (!tokenId || tokenId.error || !tokenId.value) throw { error: "Not authorized to access the sockets" };
-
 		const jwtData = security.jwtDecode(socket.handshake.query["authorization"]);
-		if (!jwtData || !jwtData.customerId || !jwtData.userId || jwtData.customerId != tokenId.value || jwtData.type != "user") throw { error: "Not authorized to access the sockets" };
+		if (!jwtData || !jwtData.customerId || !jwtData.userId || jwtData.type != "user") throw { error: "Not authorized to access the sockets" };
+
+		// check if token id in redis
+		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtData.device, socket.handshake.query["authorization"]));
+		const tokenId = await app.redisHelper.get(redKey1);
+		if (!tokenId || tokenId.error || !tokenId.value || tokenId.value != jwtData.customerId ) throw { error: "Not authorized to access the sockets" };
 
 		return { userId: jwtData.userId, customerId: jwtData.customerId, allowed: jwtData.allowed, id: collection.getUUID() };
 	} catch (exe) {
