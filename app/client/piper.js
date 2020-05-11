@@ -12,34 +12,34 @@ class Piper {
 						const items = x.data[i].slice();
 
 						try {
-							const market = items[header.indexOf("Exch.")] || null;
-							const target = items[header.indexOf("Descr.")] || null;
-							const time = items[header.indexOf("Time")] || null;
-							const bid_qty = items[header.indexOf("Bid Qty")] || null;
-							const bid = items[header.indexOf("Bid")] || null;
-							const ask = items[header.indexOf("Ask")] || null;
-							const ask_qty = items[header.indexOf("Ask Qty")] || null;
-							const ltp = items[header.indexOf("LTP")] || null;
-							const net_chg = items[header.indexOf("NetChg")] || null;
-							const percent_chg = items[header.indexOf("%Chg")] || null;
-							const volume = items[header.indexOf("Volume")] || null;
-							const open = items[header.indexOf("Open")] || null;
-							const high = items[header.indexOf("High")] || null;
-							const low = items[header.indexOf("Low")] || null;
-							const close = items[header.indexOf("Close")] || null;
-							const year_high = items[header.indexOf("52WkHigh")] || null;
-							const year_low = items[header.indexOf("52WkLow")] || null;
-							const oi = items[header.indexOf("OI")] || null;
-							const net_chg_oi = items[header.indexOf("NetChgOI")] || null;
-							const percent_chg_oi = items[header.indexOf("%ChgOI")] || null;
-							const tbq = items[header.indexOf("TBQ")] || null;
-							const taq = items[header.indexOf("TAQ")] || null;
-							const atp = items[header.indexOf("ATP")] || null;
-							const value_mln = items[header.indexOf("Value(Mln)")] || null;
-							const market_lot = items[header.indexOf("Market Lot")] || null;
-							const pqu = items[header.indexOf("PQU")] || null;
+							const market = items[header.indexOf("Exch.")] || "";
+							const target = items[header.indexOf("Descr.")] || "";
+							const time = items[header.indexOf("Time")] || "";
+							const bid_qty = items[header.indexOf("Bid Qty")] || "";
+							const bid = items[header.indexOf("Bid")] || "";
+							const ask = items[header.indexOf("Ask")] || "";
+							const ask_qty = items[header.indexOf("Ask Qty")] || "";
+							const ltp = items[header.indexOf("LTP")] || "";
+							const net_chg = items[header.indexOf("NetChg")] || "";
+							const percent_chg = items[header.indexOf("%Chg")] || "";
+							const volume = items[header.indexOf("Volume")] || "";
+							const open = items[header.indexOf("Open")] || "";
+							const high = items[header.indexOf("High")] || "";
+							const low = items[header.indexOf("Low")] || "";
+							const close = items[header.indexOf("Close")] || "";
+							const year_high = items[header.indexOf("52WkHigh")] || "";
+							const year_low = items[header.indexOf("52WkLow")] || "";
+							const oi = items[header.indexOf("OI")] || "";
+							const net_chg_oi = items[header.indexOf("NetChgOI")] || "";
+							const percent_chg_oi = items[header.indexOf("%ChgOI")] || "";
+							const tbq = items[header.indexOf("TBQ")] || "";
+							const taq = items[header.indexOf("TAQ")] || "";
+							const atp = items[header.indexOf("ATP")] || "";
+							const value_mln = items[header.indexOf("Value(Mln)")] || "";
+							const market_lot = items[header.indexOf("Market Lot")] || "";
+							const pqu = items[header.indexOf("PQU")] || "";
 
-							if (market == null || target == null) continue;
+							if (!market || !target) continue;
 							const entry = {
 								market: market,
 								target: target,

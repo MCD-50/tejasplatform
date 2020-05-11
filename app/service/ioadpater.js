@@ -35,17 +35,17 @@ export const _initialize = (app, io_server) => {
 
 				try {
 
-					// if (!socket.userId || !socket.customerId || !socket.allowed) {
-					// 	return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "User is not authenticated" } });
-					// }
+					if (!socket.userId || !socket.customerId || !socket.allowed) {
+						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "User is not authenticated" } });
+					}
 
 					// just seperating the channel from the room
 					var name = room.replace(constant.SOCKET_CHANNEL, "");
 					name = name.slice(1, name.length);
 
 					// join error
-					// if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
-					if (!constant.setting.meta.markets.includes(name)) {
+					if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
+					// if (!constant.setting.meta.markets.includes(name)) {
 						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "join_error"), { message: { error: "Room name is not valid" } });
 					}
 
@@ -69,17 +69,17 @@ export const _initialize = (app, io_server) => {
 
 				try {
 
-					// if (!socket.userId || !socket.customerId || !socket.allowed) {
-					// 	return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "User is not authenticated" } });
-					// }
+					if (!socket.userId || !socket.customerId || !socket.allowed) {
+						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "User is not authenticated" } });
+					}
 
 					// just seperating the channel from the room
 					var name = room.replace(constant.SOCKET_CHANNEL, "");
 					name = name.slice(1, name.length);
 
 					// leave error
-					// if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
-					if (!constant.setting.meta.markets.includes(name)) {
+					if (!constant.setting.meta.markets.includes(name) || !socket.allowed.split(",").map(x => x.trim()).includes(name)) {
+					// if (!constant.setting.meta.markets.includes(name)) {
 						return socket.emit(collection.prepareRedisKey(constant.SOCKET_EVENT, "leave_error"), { message: { error: "Room name is not valid" } });
 					}
 
