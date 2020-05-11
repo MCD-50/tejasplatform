@@ -14,6 +14,10 @@ export const _initialize = (app, io_server) => {
 		port: collection.parseEnvValue(process.env.REDIS_PORT),
 	}));
 
+	io_server.of("/").adapter.on("error", function(){
+		console.log("Safe handling socket.io-redis error");
+	});
+
 	io_server
 		.use(async (socket, next) => {
 			// eslint-disable-next-line no-use-before-define
