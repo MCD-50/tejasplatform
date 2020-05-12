@@ -7,13 +7,13 @@ import * as collection from "../helper/collection";
 
 export const details_get = async (req, res) => {
 	try {
-		// const ticker = await req.app.redisHelper.hgetall(constant.TICKER_MAP);
-		// if (ticker.error || !ticker.value) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+		const ticker = await req.app.redisHelper.hgetall(constant.TICKER_MAP);
+		if (ticker.error || !ticker.value) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 
-		// const fticker = {};
-		// for (var i of Object.keys(ticker.value)) fticker[i] = collection.getJsonFromString(ticker.value[i]);
+		const fticker = {};
+		for (var i of Object.keys(ticker.value)) fticker[i] = collection.getJsonFromString(ticker.value[i]);
 
-		return res.status(200).json(collection.getJsonResponse({ result: { ...constant.setting.meta, pairs: circit.get_pairs(), time: moment().format(), } }));
+		return res.status(200).json(collection.getJsonResponse({ result: { ...constant.setting.meta, pairs: circit.get_pairs(), ticker: { ...fticker }, time: moment().format(), } }));
 	} catch (exe) {
 		console.log(exe);
 		return res.status(400).json(collection.getJsonError({ error: "Something went wrong" }));

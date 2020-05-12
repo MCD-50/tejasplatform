@@ -55,3 +55,9 @@ export const _persist = (app, fileurl, mom) => {
 		}
 	});
 };
+
+// eslint-disable-next-line no-unused-vars
+export const _delete = (app) => {
+	// now read the file using pipe
+	app.redisHelper.del(constant.TICKER_MAP);
+};
