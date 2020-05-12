@@ -28,7 +28,7 @@ export const _read = (app, fileurl, mom) => {
 			circit.set_change_map(pair, buffer);
 			
 			// and push to room
-			app.emitter.to(channel).emit(event, buffer);
+			app.emitter && app.emitter.to(channel).emit(event, buffer);
 		}
 	});
 };
