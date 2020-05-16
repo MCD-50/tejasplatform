@@ -115,6 +115,7 @@ export const customers_update = async (req, res) => {
 		if (value.email) payload.email = value.email;
 		if (value.amount) payload.amount = value.amount;
 		if (value.location) payload.location = value.location;
+		if (value.info) payload.info = value.info;
 		if (value.handler) payload.handler = value.handler;
 		if (value.start) payload.start = value.start;
 		if (value.end) payload.end = value.end;

@@ -9,7 +9,7 @@ import api from "../enum/api";
 // repo
 import customer from "../repository/customer";
 import security from "../client/security";
-import market from "../repository/market";
+// import market from "../repository/market";
 
 export const register = async (req, res) => {
 	try {
@@ -38,6 +38,7 @@ export const register = async (req, res) => {
 			email: value.email || "",
 			amount: value.amount || "0",
 			location: value.location || "india",
+			info: value.info || "",
 			handler: value.handler || constant.setting.meta.managers[0],
 			start: value.start,
 			end: value.end,
@@ -48,20 +49,26 @@ export const register = async (req, res) => {
 			device: value.device || "all",
 		};
 
-		if (Number(value.limit) < constant.setting.meta.headers.length) return res.status(400).json(collection.getJsonError({ error: "Limit must be greater than header limit" }));
+		// if (Number(value.limit) < constant.setting.meta.headers.length) return res.status(400).json(collection.getJsonError({ error: "Limit must be greater than header limit" }));
 
 		const data = await customer._createItem(payload);
 		if (data.value) {
 			// add scripts
-			constant.setting.meta.headers.map(key => {
-				const parts = key.split("_div_");
-				
-				const _market = parts[0];
-				const _target = parts[1];
+			// constant.setting.meta.headers.map(key => {
+			// 	const parts = key.split("_div_");
 
-				const _payload = { customerId: payload.customerId, profile: "default", market: _market, target: _target };
-				market._createItem(_payload);
-			});
+			// 	const _market = parts[0];
+			// 	const _target = parts[1];
+
+			// 	const _payload = { 
+			// 		customerId: payload.customerId, 
+			// 		profile: "default", 
+			// 		market: _market, 
+			// 		target: _target,
+			// 		uniqueKey: `${payload.customerId}:default:${_market}:${_target}`,
+			// 	};
+			// 	market._createItem(_payload);
+			// });
 
 			return res.status(200).json(collection.getJsonResponse({ result: true }));
 		} else {

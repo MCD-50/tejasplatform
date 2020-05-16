@@ -45,6 +45,10 @@ const schema = {
 		type: String,
 		default: "",
 	},
+	info: {
+		type: String,
+		default: "",
+	},
 	handler: {
 		type: String,
 		default: "",
