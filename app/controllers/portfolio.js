@@ -36,7 +36,6 @@ export const portfolios_create = async (req, res) => {
 			customerId: value.customerId,
 			market: value.market,
 			target: value.target,
-			uniqueKey: `${value.customerId}:${value.market}:${value.target}`,
 			price: value.price,
 			quantity: value.quantity
 		};

@@ -20,8 +20,8 @@ export const DB_FETCH = {
 	notification: "_id customerId title message link createdAt updatedAt",
 	announcement: "_id title message link createdAt updatedAt",
 	plan: "_id name price createdAt updatedAt",
-	alert: "_id customerId market target uniqueKey price trigger createdAt updatedAt",
-	portfolio: "_id customerId market target uniqueKey price quantity createdAt updatedAt",
+	alert: "_id customerId market target price trigger createdAt updatedAt",
+	portfolio: "_id customerId market target price quantity createdAt updatedAt",
 };
 
 
