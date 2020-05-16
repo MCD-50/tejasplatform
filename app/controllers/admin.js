@@ -30,18 +30,17 @@ export const register = async (req, res) => {
 
 		const payload = {
 			customerId: collection.getUUID(),
-			userId: collection.getSeed(10),
+			userId: value.userId,
 			password: security.hash(value.password),
 
 			name: value.name || "",
 			mobile: value.mobile || "",
 			email: value.email || "",
 			amount: value.amount || "0",
-			location: value.location || "",
-			handler: value.handler || "",
+			location: value.location || "india",
+			handler: value.handler || constant.setting.meta.managers[0],
 			start: value.start,
 			end: value.end,
-
 
 			type: value.type || "user",
 			limit: value.limit || "10",
