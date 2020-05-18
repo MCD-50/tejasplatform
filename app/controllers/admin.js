@@ -45,7 +45,7 @@ export const register = async (req, res) => {
 
 			type: value.type || "user",
 			limit: value.limit || "10",
-			allowed: value.allowed || "",
+			allowed: value.allowed || constant.setting.meta.markets[0],
 			device: value.device || "all",
 		};
 

@@ -72,7 +72,7 @@ export const markets_update = async (req, res) => {
 		const payload = {};
 		if (value.target) {
 			payload.target = value.target;
-			payload.uniqueKey = `${marketdata.value.customerId}:${marketdata.value.market}:${value.target}`;
+			payload.uniqueKey = `${marketdata.value.customerId}:${marketdata.value.profile}:${marketdata.value.market}:${value.target}`;
 		}
 		
 		if (Object.keys(payload).length < 1) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
