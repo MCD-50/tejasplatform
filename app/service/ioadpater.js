@@ -115,6 +115,11 @@ const _parse_user_detail = async (app, socket) => {
 		const jwtverified = security.jwtVerify(socket.handshake.query["authorization"]);
 		if (!jwtverified || !jwtverified.userId || !jwtverified.customerId || !jwtverified.device || !jwtverified.allowed) throw { error: "Not authorized to access the sockets" };
 
+		// check if token id in redis
+		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtverified.device, jwtverified.customerId));
+		const tokenId = await app.redisHelper.get(redKey1);
+		if (!tokenId || tokenId.error || !tokenId.value || tokenId.value != socket.handshake.query["authorization"]) throw { error: "Not authorized to access the sockets" };
+
 		return { userId: jwtverified.userId, customerId: jwtverified.customerId, allowed: jwtverified.allowed, id: collection.getUUID() };
 	} catch (exe) {
 		return { userId: "", customerId: "", allowed: "", id: collection.getUUID() };
