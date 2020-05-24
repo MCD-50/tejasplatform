@@ -8,7 +8,8 @@ import * as collection from "../helper/collection";
 export const details_get = async (req, res) => {
 	try {
 		const ticker = await req.app.redisHelper.hgetall(constant.TICKER_MAP);
-		if (ticker.error || !ticker.value) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+		if (ticker.error) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
+		if (!ticker.value) ticker.value = {};
 
 		const fticker = {};
 		for (var i of Object.keys(ticker.value)) fticker[i] = collection.getJsonFromString(ticker.value[i]);
