@@ -26,7 +26,13 @@ export const plans_create = async (req, res) => {
 
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
-		const payload = { name: value.name, price: value.price };
+		const payload = {
+			name: value.name,
+			price: value.price,
+			description: value.description,
+			rule: value.rule
+		};
+
 		const data = await plan._createItem(payload);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));

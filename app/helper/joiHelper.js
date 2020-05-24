@@ -65,7 +65,7 @@ export const GET_ADMIN_CUSTOMER_PAYLOAD = joi.object().keys({ customerId: joi.st
 export const GET_ADMIN_CUSTOMERS_PAYLOAD = joi.object().keys({ customerId: joi.string().trim().guid({ version: ["uuidv1"] }), userId: joi.string().trim().length(10), type: joi.string().trim().valid(["user", "admin"]), location: joi.string().trim(), handler: joi.string().trim(), page: joi.number().default(1), limit: joi.number().default(20) });
 
 // PLAN => mongo
-export const CREATE_ADMIN_PLAN_PAYLOAD = joi.object().keys({ name: joi.string().trim().required(), price: joi.string().required() });
+export const CREATE_ADMIN_PLAN_PAYLOAD = joi.object().keys({ name: joi.string().trim().required(), price: joi.string().required(), description: joi.string().required(), rule: joi.string().required() });
 export const DELETE_ADMIN_PLAN_PAYLOAD = joi.object().keys({ objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_PLAN_PAYLOAD = joi.object().keys({ objectId: joi.string().trim().hex().length(24).required() });
 export const GET_USER_PLANS_PAYLOAD = joi.object().keys({ page: joi.number().default(1), limit: joi.number().default(20) });

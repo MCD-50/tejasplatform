@@ -13,6 +13,14 @@ const schema = {
 		type: String,
 		required: true,
 	},
+	description: {
+		type: String,
+		default: "",
+	},
+	rule: {
+		type: String,
+		default: "",
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now
