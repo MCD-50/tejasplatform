@@ -12,17 +12,22 @@ export const requestCheck = async (req, res, next) => {
 		// verify the token first
 		if (!security.jwtVerify(req.headers.authorization)) return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
 		
-		const jwtData = security.jwtVerify(req.headers.authorization);
-		if (!jwtData || !jwtData.customerId || !jwtData.device || jwtData.type != "admin") return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
+		const jwtverified = security.jwtVerify(req.headers.authorization);
+		if (!jwtverified || !jwtverified.customerId || !jwtverified.device || jwtverified.type != "admin") return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
+
+		// check if token id in redis
+		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtverified.device, jwtverified.customerId));
+		const tokenId = await req.app.redisHelper.get(redKey1);
+		if (!tokenId || tokenId.error || !tokenId.value || tokenId.value != req.headers.authorization) return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
 
 		// attach meta
 		const _meta = {
 			api: api.ADMIN,
-			customerId: jwtData.customerId,
+			customerId: jwtverified.customerId,
 		};
 
 		// reset the device
-		req.headers.device = jwtData.device;
+		req.headers.device = jwtverified.device;
 
 		// eslint-disable-next-line require-atomic-updates
 		req.meta = _meta;
