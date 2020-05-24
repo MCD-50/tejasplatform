@@ -9,9 +9,8 @@ export const requestCheck = async (req, res, next) => {
 		// validate headers
 		// if (!req.headers || !req.headers["user-agent"]) return res.status(400).json(collection.getJsonError({ error: "Unable to get headers" }));
 		if (!req.headers) return res.status(400).json(collection.getJsonError({ error: "Unable to get headers" }));
-
 		// eslint-disable-next-line require-atomic-updates
-		req.headers.device = "unknown";
+		if (!req.headers.device) req.headers.device = "mobile";
 
 		// attach meta
 		const _meta = {

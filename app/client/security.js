@@ -13,14 +13,6 @@ class Security {
 		}
 	}
 
-	jwtDecode(token) {
-		try {
-			return jwt.decode(token);
-		} catch (exe) {
-			return null;
-		}
-	}
-
 	jwtVerify(token) {
 		try {
 			return jwt.verify(token, collection.parseEnvValue(process.env.JWT_SECRET));

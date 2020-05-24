@@ -44,9 +44,9 @@ export const register = async (req, res) => {
 			end: value.end,
 
 			type: value.type || "user",
-			limit: value.limit || "10",
+			limit: value.limit || "20",
 			allowed: value.allowed || constant.setting.meta.markets[0],
-			device: value.device || "all",
+			device: value.device || "mobile",
 		};
 
 		// if (Number(value.limit) < constant.setting.meta.headers.length) return res.status(400).json(collection.getJsonError({ error: "Limit must be greater than header limit" }));

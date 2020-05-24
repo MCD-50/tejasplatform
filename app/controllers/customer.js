@@ -47,8 +47,8 @@ export const login = async (req, res) => {
 		const authorization = security.jwtEncode(jwtpayload);
 		if (!authorization) return res.status(422).json(collection.getJsonError({ error: "Something went wrong" }));
 
-		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtpayload.device, authorization));
-		const data = await req.app.redisHelper.set(redKey1, customerdata.value.customerId);
+		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtpayload.device, jwtpayload.customerId));
+		const data = await req.app.redisHelper.set(redKey1, authorization);
 		if (data.value) {
 
 			// call the activity creation
@@ -73,7 +73,10 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
 	try {
-		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(req.headers.device, req.headers.authorization));
+		const jwtverified = security.jwtVerify(req.headers.authorization);
+		if (!jwtverified || !jwtverified.customerId || !jwtverified.device) return res.status(401).json(collection.getJsonError({ error: "Something went wrong" }));
+
+		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtverified.device, jwtverified.customerId));
 		const data = await req.app.redisHelper.del(redKey1);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: true }));

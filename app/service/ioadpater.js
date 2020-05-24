@@ -110,17 +110,12 @@ const _parse_user_detail = async (app, socket) => {
 		if (!socket.handshake.query["authorization"]) throw { error: "Not authorized to access the sockets" };
 
 		// now check if token can be parsed
-		if (security.jwtVerify(socket.handshake.query["authorization"]) == false) throw { error: "Not authorized to access the sockets" };
+		if (!security.jwtVerify(socket.handshake.query["authorization"])) throw { error: "Not authorized to access the sockets" };
 
-		const jwtData = security.jwtDecode(socket.handshake.query["authorization"]);
-		if (!jwtData || !jwtData.customerId || !jwtData.userId || jwtData.type != "user") throw { error: "Not authorized to access the sockets" };
+		const jwtverified = security.jwtVerify(socket.handshake.query["authorization"]);
+		if (!jwtverified || !jwtverified.userId || !jwtverified.customerId || !jwtverified.device || !jwtverified.allowed) throw { error: "Not authorized to access the sockets" };
 
-		// check if token id in redis
-		const redKey1 = collection.prepareRedisKey(constant.CUSTOMER_ID_FROM_JWT, collection.prepareRedisKey(jwtData.device, socket.handshake.query["authorization"]));
-		const tokenId = await app.redisHelper.get(redKey1);
-		if (!tokenId || tokenId.error || !tokenId.value || tokenId.value != jwtData.customerId) throw { error: "Not authorized to access the sockets" };
-
-		return { userId: jwtData.userId, customerId: jwtData.customerId, allowed: jwtData.allowed, id: collection.getUUID() };
+		return { userId: jwtverified.userId, customerId: jwtverified.customerId, allowed: jwtverified.allowed, id: collection.getUUID() };
 	} catch (exe) {
 		return { userId: "", customerId: "", allowed: "", id: collection.getUUID() };
 	}
