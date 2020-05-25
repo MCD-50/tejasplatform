@@ -230,6 +230,12 @@ export const customers = async (req, res) => {
 		if (value.userId) filter.userId = value.userId;
 		if (value.type) filter.type = value.type;
 		if (value.location) filter.location = value.location;
+		
+		if (value.name) filter.name = new RegExp("^.*?" + value.name + ".*$", "i");
+		if (value.mobile) filter.mobile = value.mobile;
+		if (value.email) filter.email = value.email;
+		if (value.allowed) filter.allowed = new RegExp("^.*?" + value.allowed + ".*$", "i");
+		
 		if (value.handler) filter.handler = value.handler;
 
 		const paging = { page: value.page, limit: value.limit };
