@@ -37,14 +37,14 @@ export const register = async (req, res) => {
 			mobile: value.mobile || "",
 			email: value.email || "",
 			amount: value.amount || "0",
-			location: value.location || "india",
+			location: value.location || "",
 			info: value.info || "",
-			handler: value.handler || constant.setting.meta.managers[0],
+			handler: value.handler || "",
 			start: value.start,
 			end: value.end,
 
 			type: value.type || "user",
-			limit: value.limit || "20",
+			limit: value.limit || "1",
 			allowed: value.allowed || constant.setting.meta.markets[0],
 			device: value.device || "mobile",
 		};
