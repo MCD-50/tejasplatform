@@ -111,15 +111,16 @@ export const customers_update = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const payload = {};
+		
+		if (value.name || value.name == "") payload.name = value.name;
+		if (value.mobile || value.mobile == "") payload.mobile = value.mobile;
+		if (value.email || value.email == "") payload.email = value.email;
+		if (value.amount || value.amount == "") payload.amount = value.amount;
+		if (value.location || value.location == "") payload.location = value.location;
+		if (value.info || value.info == "") payload.info = value.info;
+		if (value.handler || value.handler == "") payload.handler = value.handler;
+		
 		if (value.password) payload.password = security.hash(value.password);
-
-		if (value.name) payload.name = value.name;
-		if (value.mobile) payload.mobile = value.mobile;
-		if (value.email) payload.email = value.email;
-		if (value.amount) payload.amount = value.amount;
-		if (value.location) payload.location = value.location;
-		if (value.info) payload.info = value.info;
-		if (value.handler) payload.handler = value.handler;
 		if (value.start) payload.start = value.start;
 		if (value.end) payload.end = value.end;
 
