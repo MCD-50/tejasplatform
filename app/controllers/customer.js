@@ -111,7 +111,7 @@ export const customers_update = async (req, res) => {
 		if (error || !value || (!error && !value)) return res.status(400).json(collection.getJsonError({ error: "Please check payload" }));
 
 		const payload = {};
-		
+
 		if (value.name || value.name == "") payload.name = value.name;
 		if (value.mobile || value.mobile == "") payload.mobile = value.mobile;
 		if (value.email || value.email == "") payload.email = value.email;
@@ -119,7 +119,7 @@ export const customers_update = async (req, res) => {
 		if (value.location || value.location == "") payload.location = value.location;
 		if (value.info || value.info == "") payload.info = value.info;
 		if (value.handler || value.handler == "") payload.handler = value.handler;
-		
+
 		if (value.password) payload.password = security.hash(value.password);
 		if (value.start) payload.start = value.start;
 		if (value.end) payload.end = value.end;
@@ -230,16 +230,21 @@ export const customers = async (req, res) => {
 		if (value.userId) filter.userId = value.userId;
 		if (value.type) filter.type = value.type;
 		if (value.location) filter.location = value.location;
-		
+
 		if (value.name) filter.name = new RegExp("^.*?" + value.name + ".*$", "i");
 		if (value.mobile) filter.mobile = value.mobile;
 		if (value.email) filter.email = value.email;
 		if (value.allowed) filter.allowed = new RegExp("^.*?" + value.allowed + ".*$", "i");
-		
+
+		if (value.start && value.end) {
+			filter.start = { "$gte": value.start };
+			filter.end = { "$lte": value.end };
+		}
+
 		if (value.handler) filter.handler = value.handler;
-
+		
 		const paging = { page: value.page, limit: value.limit };
-
+		
 		const data = await customer._filterItem(filter, paging);
 		if (data.value) {
 			return res.status(200).json(collection.getJsonResponse({ result: data.value }));
