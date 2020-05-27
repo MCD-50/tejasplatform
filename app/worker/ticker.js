@@ -8,7 +8,7 @@ import files from "../../files";
 const initialize = (app) => {
 	files.map(_path => {
 		// socket
-		setInterval(() => ticker._read(app, _path, moment()), 50);
+		setInterval(() => ticker._read(app, _path, moment()), 5000);
 	
 		// redis
 		setInterval(() => ticker._persist(app, _path, moment()), 1000 * 5);
