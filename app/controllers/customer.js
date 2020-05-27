@@ -237,7 +237,7 @@ export const customers = async (req, res) => {
 		if (value.allowed) filter.allowed = new RegExp("^.*?" + value.allowed + ".*$", "i");
 
 		if (value.start && value.end) {
-			filter.start = { "$gte": value.start };
+			filter.end = { "$gte": value.start };
 			filter.end = { "$lte": value.end };
 		}
 
