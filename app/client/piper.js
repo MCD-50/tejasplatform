@@ -14,7 +14,7 @@ class Piper {
 							const items = x.data[i].slice();
 
 							try {
-								const market = "FOREX";
+								const market = "INTL";
 								const target = items[header.indexOf("Symbol")] || "";
 								const time = items[header.indexOf("Time")] || "";
 								const bid_qty = items[header.indexOf("Bid Qty")] || "";

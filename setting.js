@@ -1,4 +1,4 @@
 export const meta = {
-	markets: ["MCX", "COMEX", "INTL.SPOT", "FOREX", "NCDEX", "NSE"],
+	markets: ["MCX", "COMEX", "INTL.SPOT", "INTL", "FOREX", "NCDEX", "NSE"],
 	headers: ["FOREX_div_USDINR"],
 };
