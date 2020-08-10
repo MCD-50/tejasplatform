@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const kill = require('kill-port')
 
 const io_emitter = require("socket.io-emitter");
 
@@ -137,28 +138,58 @@ mongoose.connection.on("open", () => {
 
 
 	// start server
-	server.listen(collection.parseEnvValue(process.env.PORT), collection.parseEnvValue(process.env.HOST), async () => {
-		console.log("APP", `Server running on port ${collection.parseEnvValue(process.env.PORT)} and on host ${collection.parseEnvValue(process.env.HOST)}.....`);
-		process.on("unhandledRejection", (reason, promise) => {
-			console.log("APP_ERROR", "Uncaught error in", reason, promise);
-			process.exit(0);
-		});
+	kill(collection.parseEnvValue(process.env.PORT), 'tcp')
+		.then(() => {
+			console.log("Starting after port kill");
+			server.listen(collection.parseEnvValue(process.env.PORT), collection.parseEnvValue(process.env.HOST), async () => {
+				console.log("APP", `Server running on port ${collection.parseEnvValue(process.env.PORT)} and on host ${collection.parseEnvValue(process.env.HOST)}.....`);
+				process.on("unhandledRejection", (reason, promise) => {
+					console.log("APP_ERROR", "Uncaught error in", reason, promise);
+					process.exit(0);
+				});
 
-		process.on("uncaughtException", (reason, promise) => {
-			console.log("APP_ERROR", "Uncaught error in", reason, promise);
-			process.exit(0);
-		});
+				process.on("uncaughtException", (reason, promise) => {
+					console.log("APP_ERROR", "Uncaught error in", reason, promise);
+					process.exit(0);
+				});
 
-		process.once("SIGTERM", () => {
-			process.exit(0);
-			// kueClient.shutdown(5000, (err) => {
-			// 	console.log("APP_ERROR", "Kue shutdown", err);
-			// 	process.exit(0);
-			// });
-		});
+				process.once("SIGTERM", () => {
+					process.exit(0);
+					// kueClient.shutdown(5000, (err) => {
+					// 	console.log("APP_ERROR", "Kue shutdown", err);
+					// 	process.exit(0);
+					// });
+				});
 
-		initialize(app);
-	});
+				initialize(app);
+			});
+		})
+		.catch((exe) => {
+			console.log("Error in port kill", exe);
+			server.listen(collection.parseEnvValue(process.env.PORT), collection.parseEnvValue(process.env.HOST), async () => {
+				console.log("APP", `Server running on port ${collection.parseEnvValue(process.env.PORT)} and on host ${collection.parseEnvValue(process.env.HOST)}.....`);
+				process.on("unhandledRejection", (reason, promise) => {
+					console.log("APP_ERROR", "Uncaught error in", reason, promise);
+					process.exit(0);
+				});
+
+				process.on("uncaughtException", (reason, promise) => {
+					console.log("APP_ERROR", "Uncaught error in", reason, promise);
+					process.exit(0);
+				});
+
+				process.once("SIGTERM", () => {
+					process.exit(0);
+					// kueClient.shutdown(5000, (err) => {
+					// 	console.log("APP_ERROR", "Kue shutdown", err);
+					// 	process.exit(0);
+					// });
+				});
+
+				initialize(app);
+			});
+		})
+
 });
 
 mongoose.connection.on("error", (err) => {
