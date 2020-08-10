@@ -73,6 +73,7 @@ class Piper {
 
 								callback({ ...entry });
 							} catch (exe) {
+								callback(null);
 								console.log(exe);
 							}
 						}
@@ -140,13 +141,17 @@ class Piper {
 
 								callback({ ...entry });
 							} catch (exe) {
+								callback(null);
 								console.log(exe);
 							}
 						}
 					}
 				}
 			});
+
+			callback(null);
 		} catch (exe) {
+			callback(null);
 			console.log(exe);
 		}
 	}

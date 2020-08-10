@@ -11,7 +11,7 @@ const initialize = (app) => {
 		setInterval(() => ticker._read(app, _path, moment()), 50);
 	
 		// redis
-		setInterval(() => ticker._persist(app, _path, moment()), 1000 * 5);
+		setInterval(() => ticker._persist(app, _path, moment()), 1000 * 10);
 
 		// redis
 		setInterval(() => ticker._delete(app, _path, moment()), 60000 * 60);
